@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!-- ========== Left Sidebar Start ========== -->
+<div class="vertical-menu">
+
+    <div data-simplebar class="h-100">
+
+        <!--- Sidemenu -->
+        <div id="sidebar-menu">
+            <!-- Left Menu Start -->
+            <ul class="metismenu list-unstyled" id="side-menu">
+                <li class="menu-title" key="t-menu">Menu Customer</li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bxs-user"></i>
+                        <span key="t-employees">Employees</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                     
+                        @*<li><a href=@Url.Action("Index", "CustomerAttendanceReport") key="t-customer-attendances-report">Attendance Report</a></li>*@
+                        <li><a href=@Url.Action("Lucid", "CustomerAttendanceReport") key="t-customer-attendances-report">Lucid Attendance Report</a></li>
+                        <li><a href=@Url.Action("smarthr", "CustomerAttendanceReport") key="t-customer-attendances-report">smarthr Attendance Report</a></li>
+                  
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="waves-effect" asp-area="" asp-controller="Account" asp-action="Logout">
+                        <span key="t-settings">Logout</span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+        <!-- Sidebar -->
+    </div>
+</div>
+<!-- Left Sidebar End -->

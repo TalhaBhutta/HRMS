@@ -1,0 +1,74 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    @await Html.PartialAsync("~/Views/_Shared/_title_meta.cshtml")
+    @RenderSection("styles", false)
+    @await Html.PartialAsync("~/Views/_Shared/_head_css.cshtml")
+</head>
+
+<body data-sidebar="dark">
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+        @await Html.PartialAsync("~/Views/_Shared/_topbar.cshtml")
+        @if (SignInManager.IsSignedIn(User))
+        {
+            if (User.IsInRole("Admin") || User.IsInRole("Owner"))
+            {
+                @await Html.PartialAsync("~/Views/_Shared/_sidebarCS.cshtml")
+            }
+            else if (User.IsInRole("Employee"))
+            {
+                @await Html.PartialAsync("~/Views/_Shared/_sidebarEmployee.cshtml")
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                @await Html.PartialAsync("~/Views/_Shared/_sidebarCustomer.cshtml")
+            }
+            else if (User.IsInRole("Recruter"))
+            {
+                @await Html.PartialAsync("~/Views/_Shared/_sidebarRecruter.cshtml")
+            }
+
+        }
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+
+        <div class="main-content">
+            <div class="page-content">
+                <div class="container-fluid">
+                    @await Html.PartialAsync("~/Views/_Shared/_page_title.cshtml")
+
+                    @RenderBody()
+                </div> <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+            @await Html.PartialAsync("~/Views/_Shared/_footer.cshtml")
+        </div>
+        <!-- end main content-->
+
+    </div>
+
+    @RenderSection("externalhtml", required: false)
+
+    <!-- END layout-wrapper -->
+    @await Html.PartialAsync("~/Views/_Shared/_right_sidebar.cshtml")
+
+    @*@await Html.PartialAsync("~/Views/_Shared/_vendor_scripts.cshtml")*@
+
+    @RenderSection("scripts", required: false)
+
+
+</body>
+
+</html>

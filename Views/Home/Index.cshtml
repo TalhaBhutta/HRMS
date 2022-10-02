@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/_Shared/_LoginLayout.cshtml";
+}
+
+<div class="text-center">
+    <h1 style=font-size:100px class="display-4">Welcome!</h1>
+    @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
+</div>
+
+<hr class="dashed">
+<br>
+<br>
+
+<div class="row align-items-end">
+    <div class="col-lg-4 align-center">
+        <div class="card bg-primary text-white-50">
+            @*<a href=@Url.Action("Index", "AuthRegister", new { role = "Employee"})>*@
+            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register" asp-route-RoleName="Employee">
+                <div class="card-body">
+                    <h4 class="mt-0 mb-4 text-white text-center">Candidate</h4>
+                    @*<p class="card-text">If you want to apply, click here.</p>*@
+                    <p class="card-text text-white text-center">To apply, click here.</p>
+
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-4 align-center">
+        <div class="card bg-info text-white-50">
+            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register" asp-route-RoleName="Customer">
+                <div class="card-body">
+                    <h4 class="mt-0 mb-4 text-white text-center">Customer</h4>
+                    <p class="card-text text-white text-center">To hire, click here.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-4 align-center">
+        <div class="card bg-success text-white-50">
+            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register" asp-route-RoleName="Recruter">
+                <div class="card-body">
+                    <h4 class="mt-0 mb-4 text-white text-center">Recruter</h4>
+                    <p class="card-text text-white text-center">To recrute, click here.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+
+

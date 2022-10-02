@@ -1,0 +1,837 @@
+﻿@model IEnumerable<HRMS.ViewModels.CustomerAttendanceReportViewModel>
+
+@{
+    ViewBag.Title = "Customer Attendance Report";
+    ViewBag.pTitle = "Customer Attendance Report";
+    ViewBag.pageTitle = "Assignment";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+
+    <!--Get number of days of current month-->
+    var DaysInmonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+    var DayofMonth = DateTime.Now.Day;
+}
+
+@*<div class="container">*@
+    <div class="row">
+        <div class="filter-box">
+            <!-- FILTER START -->
+            <form action="" id="filter-form">
+                <div class="row justify-content-start m-2">
+                    @*<div class="col-sm-6">*@
+                    <div class="btn-group mr-1 mt-2 dropdown">
+                        <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Employee <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                    @*</div>*@
+
+                    @*<div class="col-sm-6">*@
+                    <div class="btn-group mr-1 mt-2 dropdown ">
+                        <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Month <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu pre-scrollable" aria-labelledby="dropdownMenuButton" name="month" id="month" data-live-search="true">
+                            <a class="dropdown-item" href="#" value="01">January</a>
+                            <a class="dropdown-item" href="#" value="02">February</a>
+                            <a class="dropdown-item" href="#" value="03">March</a>
+                            <a class="dropdown-item" href="#" value="04">April</a>
+                            <a class="dropdown-item" href="#" value="05">May</a>
+                            <a class="dropdown-item" href="#" value="06">June</a>
+                            <a class="dropdown-item" href="#" value="07">July</a>
+                            <a class="dropdown-item" href="#" value="08">August</a>
+                            <a class="dropdown-item" href="#" value="09">September</a>
+                            <a class="dropdown-item" href="#" value="10">October</a>
+                            <a class="dropdown-item" href="#" value="11">November</a>
+                            <a class="dropdown-item" href="#" value="12">December</a>
+                        </div>
+                    </div>
+                    @*</div>*@
+
+                    @*<option value="01">January</option>
+                        <option value="02">February</option>
+                        <option value="03">March</option>
+                        <option value="04">                                    April                                </option>
+                        <option value="05">                                    May                                </option>
+                        <option value="06">                                    June                                </option>
+                        <option value="07">                                    July                                </option>
+                        <option value="08">                                    August                                </option>
+                        <option value="09">                                    September                                </option>
+                        <option value="10">                                    October                                </option>
+                        <option value="11">                                    November                                </option>
+                        <option selected="" value="12">                                    December                       </option>*@
+
+                    @*<div class="col-sm-6">*@
+                    <div class="btn-group mr-1 mt-2 dropdown">
+                        <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Year <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" name="year" id="year" data-live-search="true">
+                            <a class="dropdown-item" href="#" value="2021">2021</a>
+                            <a class="dropdown-item" href="#" value="2022">2022</a>
+                        </div>
+                    </div>
+                    @*</div>*@
+
+                    @*<div class="col-sm-6">*@
+                    <div class="btn-group mr-1 mt-2 dropdown">
+                        <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Late <i class="mdi mdi-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" name="late" id="late">
+                            <a class="dropdown-item" href="#" value="All">All</a>
+                            <a class="dropdown-item" href="#" value="Yes">Yes</a>
+                            <a class="dropdown-item" href="#" value="No">No</a>
+                        </div>
+                    </div>
+                    @*</div>*@
+
+                    <div class="btn-group mr-1 mt-2">  
+							<div class="d-grid">
+								<a href="#" class="btn btn-success"> Search </a>  
+							</div>
+						</div> 
+                </div>
+
+                <!-- Search Filter -->
+				@*	<div class="row filter-row">
+						<div class="col-sm-6 col-md-3">  
+							<div class="form-group form-focus">
+								<input type="text" class="form-control floating">
+								<label class="focus-label">Employee Name</label>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3"> 
+							<div class="form-group form-focus select-focus">
+								<select class="select floating"> 
+									<option>-</option>
+									<option>Jan</option>
+									<option>Feb</option>
+									<option>Mar</option>
+									<option>Apr</option>
+									<option>May</option>
+									<option>Jun</option>
+									<option>Jul</option>
+									<option>Aug</option>
+									<option>Sep</option>
+									<option>Oct</option>
+									<option>Nov</option>
+									<option>Dec</option>
+								</select>
+								<label class="focus-label">Select Month</label>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3"> 
+							<div class="form-group form-focus select-focus">
+								<select class="select floating"> 
+									<option>-</option>
+									<option>2019</option>
+									<option>2018</option>
+									<option>2017</option>
+									<option>2016</option>
+									<option>2015</option>
+								</select>
+								<label class="focus-label">Select Year</label>
+							</div>
+						</div>
+                        
+						    
+                    </div>
+					<!-- /Search Filter -->
+                    *@
+            </form>
+        </div>
+    </div>
+
+    <!--<div class="d-flex">
+        <div id="table-actions" class="flex-grow-1 align-items-center">
+            <a href="https://demo.worksuite.biz/account/attendances/create" class="btn-primary rounded f-14 p-2 mr-3 openRightModal float-left">
+                <svg class="svg-inline--fa fa-plus fa-w-14 mr-1" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>-->
+    <!-- <i class="fa fa-plus mr-1"></i> Font Awesome fontawesome.com -->
+    <!--Mark Attendance
+    </a>
+    <button type="button" class="btn-secondary rounded f-14 p-2 mr-3 mb-2 mb-lg-0" id="export-all">
+        <svg class="svg-inline--fa fa-file-export fa-w-18 mr-1" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="file-export" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg=""><path fill="currentColor" d="M384 121.9c0-6.3-2.5-12.4-7-16.9L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128zM571 308l-95.7-96.4c-10.1-10.1-27.4-3-27.4 11.3V288h-64v64h64v65.2c0 14.3 17.3 21.4 27.4 11.3L571 332c6.6-6.6 6.6-17.4 0-24zm-379 28v-32c0-8.8 7.2-16 16-16h176V160H248c-13.2 0-24-10.8-24-24V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V352H208c-8.8 0-16-7.2-16-16z"></path></svg>-->
+    <!-- <i class="fa fa-file-export mr-1"></i> Font Awesome fontawesome.com -->
+    <!--Export
+            </button>
+        </div>
+
+        <div class="btn-group" role="group">
+            <a href="https://demo.worksuite.biz/account/attendances" class="btn btn-secondary f-14 btn-active" data-toggle="tooltip" data-original-title="Summary"><i class="side-icon bi bi-list-ul"></i></a>
+
+            <a href="https://demo.worksuite.biz/account/attendances/by-member" class="btn btn-secondary f-14" data-toggle="tooltip" data-original-title="Attendance by Member"><i class="side-icon bi bi-person"></i></a>
+        </div>
+    </div>-->
+    <!--<div class="row">
+        <div class="col-md-12">
+            <span class="f-w-500 mr-1">Note:</span>
+            <svg class="svg-inline--fa fa-star fa-w-18 text-warning" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="star" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg=""><path fill="currentColor" d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path></svg>-->
+    <!-- <i class="fa fa-star text-warning"></i> Font Awesome fontawesome.com --> <!--<svg class="svg-inline--fa fa-arrow-right fa-w-14 text-lightest f-11 mx-1" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg>--><!-- <i class="fa fa-arrow-right text-lightest f-11 mx-1"></i> Font Awesome fontawesome.com --> <!--Holiday &nbsp;|&nbsp; <svg class="svg-inline--fa fa-check fa-w-16 text-primary" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg>--><!-- <i class="fa fa-check text-primary"></i> Font Awesome fontawesome.com --> <!--<svg class="svg-inline--fa fa-arrow-right fa-w-14 text-lightest f-11 mx-1" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg>--><!-- <i class="fa fa-arrow-right text-lightest f-11 mx-1"></i> Font Awesome fontawesome.com -->
+    <!--Present &nbsp;|&nbsp; <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512" data-fa-i2svg=""><path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg>--><!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com --> <!--<svg class="svg-inline--fa fa-arrow-right fa-w-14 text-lightest f-11 mx-1" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="arrow-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg>--><!-- <i class="fa fa-arrow-right text-lightest f-11 mx-1"></i> Font Awesome fontawesome.com -->
+    <!--Absent
+        </div>
+    </div>-->
+    <!--<div class="filter-box">
+        <!-- FILTER START -->
+    <!--<form action="" id="filter-form">
+        <div class="d-lg-flex d-md-flex d-block flex-wrap filter-box bg-white client-list-filter">
+            <div class="select-box d-flex py-2 pr-2 border-right-grey border-right-grey-sm-0">
+                <p class="mb-0 pr-3 f-14 text-dark-grey d-flex align-items-center">Employee</p>
+                <div class="select-status">
+                    <div class="dropdown bootstrap-select form-control select-picker">
+                        <select class="form-control select-picker" name="user_id" id="user_id" data-live-search="true" data-size="8">
+                            <option value="all">All</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=phirthe@example.org' ></div> Ben Grant" value="46">Ben Grant</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=tressie.larkin@example.org' ></div> Bonnie Kling" value="49">Bonnie Kling</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=twilliamson@example.org' ></div> Carissa Davis" value="53">Carissa Davis</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=estel78@example.com' ></div> Dr. Albin Willms DVM" value="63">Dr. Albin Willms DVM</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=wroob@example.com' ></div> Dr. Ophelia Cormier" value="57">Dr. Ophelia Cormier</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=hills.ford@example.net' ></div> Dr. Rodrigo Ritchie IV" value="44">Dr. Rodrigo Ritchie IV</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=debert@example.org' ></div> Elijah Greenholt" value="35">Elijah Greenholt</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=aglae.stanton@example.com' ></div> Janiya Crist" value="47">Janiya Crist</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=herzog.jarret@example.org' ></div> Jedidiah Walker" value="38">Jedidiah Walker</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=jared31@example.com' ></div> Joanie Ortiz" value="48">Joanie Ortiz</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=admin@example.com' ></div> John Durgan" value="1">John Durgan</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=alice.schowalter@example.org' ></div> Johnny Prosacco" value="59">Johnny Prosacco</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=plemke@example.org' ></div> Lexie Turcotte" value="41">Lexie Turcotte</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=employee@example.com' ></div> Lucius Littel" value="2">Lucius Littel</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=doyle.mathias@example.org' ></div> Marcel Jones" value="34">Marcel Jones</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=jessie.muller@example.com' ></div> Marilyne Schmidt" value="40">Marilyne Schmidt</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=wrempel@example.net' ></div> Mr. Fern Pagac V" value="54">Mr. Fern Pagac V</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=xmoen@example.org' ></div> Mr. Ned Kuvalis DDS" value="42">Mr. Ned Kuvalis DDS</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=morissette.mireya@example.org' ></div> Mrs. Maurine Fritsch" value="62">Mrs. Maurine Fritsch</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=ashley66@example.com' ></div> Prof. Ben Balistreri" value="55">Prof. Ben Balistreri</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=rempel.elton@example.net' ></div> Prof. Bertha Torp I" value="60">Prof. Bertha Torp I</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=reid.hill@example.net' ></div> Prof. Charlene Heaney I" value="51">Prof. Charlene Heaney I</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=rosemary.kihn@example.com' ></div> Prof. Fatima Barton IV" value="45">Prof. Fatima Barton IV</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=pearl.williamson@example.net' ></div> Prof. Manuel Prohaska PhD" value="58">Prof. Manuel Prohaska PhD</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=denesik.trenton@example.com' ></div> Prof. Marietta Ward" value="52">Prof. Marietta Ward</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=pfriesen@example.org' ></div> Prof. Rogelio Feest V" value="56">Prof. Rogelio Feest V</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=eloisa.ebert@example.org' ></div> Reginald Beatty" value="39">Reginald Beatty</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=considine.matilda@example.org' ></div> Reilly Grimes" value="36">Reilly Grimes</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=kristian.pollich@example.org' ></div> Roma Doyle" value="50">Roma Doyle</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=lea10@example.com' ></div> Rosetta Rohan DDS" value="61">Rosetta Rohan DDS</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=mayer.dewitt@example.com' ></div> Terrence Hoeger" value="37">Terrence Hoeger</option>
+                            <option data-content="<div class='d-inline-block mr-1'><img class='taskEmployeeImg rounded-circle' src='https://i.pravatar.cc/300?u=hansen.raegan@example.org' ></div> Vivien Fadel" value="43">Vivien Fadel</option>
+                        </select><button type="button" tabindex="-1" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="combobox" aria-owns="bs-select-1" aria-haspopup="listbox" aria-expanded="false" data-id="user_id" title="All"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">All</div></div> </div></button><div class="dropdown-menu "><div class="bs-searchbox"><input type="search" class="form-control" autocomplete="off" role="combobox" aria-label="Search" aria-controls="bs-select-1" aria-autocomplete="list"></div><div class="inner show" role="listbox" id="bs-select-1" tabindex="-1"><ul class="dropdown-menu inner show" role="presentation"></ul></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="select-box d-flex py-2 px-lg-2 px-md-2 px-0 border-right-grey border-right-grey-sm-0">
+                <p class="mb-0 pr-3 f-14 text-dark-grey d-flex align-items-center">Department</p>
+                <div class="select-status">
+                    <div class="dropdown bootstrap-select form-control select-picker">
+                        <select class="form-control select-picker" name="department" id="department" data-live-search="true" data-size="8">
+                            <option value="all">All</option>
+                            <option value="1">Marketing</option>
+                            <option value="2">Sales</option>
+                            <option value="3">Human Resources</option>
+                            <option value="4">Public Relations</option>
+                            <option value="5">Research</option>
+                            <option value="6">Finance</option>
+                        </select><button type="button" tabindex="-1" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="combobox" aria-owns="bs-select-2" aria-haspopup="listbox" aria-expanded="false" data-id="department" title="All"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">All</div></div> </div></button><div class="dropdown-menu "><div class="bs-searchbox"><input type="search" class="form-control" autocomplete="off" role="combobox" aria-label="Search" aria-controls="bs-select-2" aria-autocomplete="list"></div><div class="inner show" role="listbox" id="bs-select-2" tabindex="-1"><ul class="dropdown-menu inner show" role="presentation"></ul></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="select-box d-flex py-2 px-lg-2 px-md-2 px-0 border-right-grey border-right-grey-sm-0">
+                <p class="mb-0 pr-3 f-14 text-dark-grey d-flex align-items-center">Month</p>
+                <div class="select-status">
+                    <div class="dropdown bootstrap-select form-control select-picker">
+                        <select class="form-control select-picker" name="month" id="month" data-live-search="true" data-size="8">
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">                                    April                                </option>
+                        <option value="05">                                    May                                </option>
+                            <option value="06">                                    June                                </option>
+                            <option value="07">                                    July                                </option>
+                            <option value="08">                                    August                                </option>
+                            <option value="09">                                    September                                </option>
+                            <option value="10">                                    October                                </option>
+                            <option value="11">                                    November                                </option>
+                            <option selected="" value="12">                                    December                       </option>
+                        </select><button type="button" tabindex="-1" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="combobox" aria-owns="bs-select-3" aria-haspopup="listbox" aria-expanded="false" data-id="month" title="December"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">December</div></div> </div></button><div class="dropdown-menu "><div class="bs-searchbox"><input type="search" class="form-control" autocomplete="off" role="combobox" aria-label="Search" aria-controls="bs-select-3" aria-autocomplete="list"></div><div class="inner show" role="listbox" id="bs-select-3" tabindex="-1"><ul class="dropdown-menu inner show" role="presentation"></ul></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="select-box d-flex py-2 px-lg-2 px-md-2 px-0 border-right-grey border-right-grey-sm-0">
+                <p class="mb-0 pr-3 f-14 text-dark-grey d-flex align-items-center">Year</p>
+                <div class="select-status">
+                    <div class="dropdown bootstrap-select form-control select-picker">
+                        <select class="form-control select-picker" name="year" id="year" data-live-search="true" data-size="8">
+                            <option selected="" value="2021">2021</option>
+                            <option value="2020">2020</option>
+                            <option value="2019">2019</option>
+                            <option value="2018">2018</option>
+                            <option value="2017">2017</option>
+                        </select>-->
+    @*<button type="button" tabindex="-1" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="combobox" aria-owns="bs-select-4" aria-haspopup="listbox" aria-expanded="false" data-id="year" title="2021">*@
+    <!--<button class="btn dropdown-toggle btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="filter-option">
+                        <div class="filter-option-inner">
+                            <div class="filter-option-inner-inner">2021</div>
+                        </div>
+                    </div>
+                </button>
+                <div class="dropdown-menu ">
+                    <div class="bs-searchbox">
+                        <input type="search" class="form-control" autocomplete="off" role="combobox" aria-label="Search" aria-controls="bs-select-4" aria-autocomplete="list">
+                    </div>
+                    <div class="inner show" role="listbox" id="bs-select-4" tabindex="-1"><ul class="dropdown-menu inner show" role="presentation"></ul></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="select-box d-flex py-2 px-lg-2 px-md-2 px-0 border-right-grey border-right-grey-sm-0">
+        <p class="mb-0 pr-3 f-14 tex  n t-dark-grey d-flex align-items-center">Late</p>
+        <div class="select-status">
+            <div class="dropdown bootstrap-select form-control select-picker">
+                <select class="form-control select-picker" name="late" id="late">
+                    <option value="all">All</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>-->
+    @*<button type="button" tabindex="-1" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="combobox" aria-owns="bs-select-5" aria-haspopup="listbox" aria-expanded="false" data-id="late" title="All">*@
+    <!--<button class="btn dropdown-toggle btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="filter-option">
+            <div class="filter-option-inner">
+                <div class="filter-option-inner-inner">All</div>
+            </div>
+        </div>
+    </button>-->
+    @*<div class="dropdown-menu ">
+            <div class="inner show" role="listbox" id="bs-select-5" tabindex="-1">
+                <ul class="dropdown-menu inner show" role="presentation"></ul>
+            </div>
+        </div>*@
+    @*</div>
+            </div>
+        </div>*@
+
+    @*<div class="dropdown">
+            <button class="btn dropdown-toggle btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown button <i class="mdi mdi-chevron-down"></i>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </div>-->*@
+
+
+    <!-- RESET START -->
+    <!--<div class="select-box d-flex py-1 px-lg-2 px-md-2 px-0">
+        <button type="button" class="btn-secondary rounded f-14 p-2 btn-xs d-none" id="reset-filters">
+            <svg class="svg-inline--fa fa-times-circle fa-w-16 mr-1" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="times-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"></path></svg>-->
+    <!-- <i class="fa fa-times-circle mr-1"></i> Font Awesome fontawesome.com -->
+    <!--Clear
+        </button>
+    </div>-->
+    <!-- RESET END -->
+    <!--</div>
+        </form>
+
+    </div>-->
+
+
+     @*<table class="table table-centered table-nowrap table-hover table-bordered">
+       <table class="table table-bordered mt-3">*@
+<div class="row clearfix">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="table-responsive">
+
+        <table class="table table-hover table-bordered attendance_list">
+        <thead class="thead">
+            <tr>
+                @*<th scope="col" style="width: 70px;">#</th>*@
+                <th scope="col">Employee(s) Name</th>
+                @*
+                    <th scope="col">Email</th>
+                    <th scope="col">Tags</th>
+                    <th scope="col">Projects</th>rap
+                    <th scope="col">Action</th>*@
+
+                <!--Loop all the days of month and print it-->
+                @for (var numb = 1; numb <= DaysInmonth; numb++)
+                {
+                    <th class="text-center">@numb</th>
+                }
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var emp in Model)
+            {
+                <tr>
+                    <!--loop all days of month-->
+
+                    <td>
+                        <div class="avatar-xs">
+                            <span class="avatar-title rounded-circle">
+                                D
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <h5 class="font-size-14 mb-1"><a href="#" class="text-dark">@emp.Emp_name</a></h5>
+                        @*<p class="text-muted mb-0">UI/UX Designer</p>*@
+                    </td>
+
+                    @for (var numb = 1; numb <= DaysInmonth; numb++)
+                    {
+                        @foreach (var attent in emp.empAttendances)
+                        {
+                            <td>
+                                @*<a href="javascript:document.getElementById('exampleModal').modal('show');">*@
+                                @*<a data-toggle="modal" data-target="exampleModal">*@
+                                <a data-toggle="modal" href="#exampleModal">
+                                    @if (numb > DayofMonth)
+                                    {
+                                        <text> - </text>
+                                    }
+                                    else if (@attent.CheckInTime.Value.Day == numb)
+                                    {
+
+                                        <i class="fa fa-check-circle" style="font-size:24px;color:springgreen"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-times" style="color:gray"></i>
+                                    }
+                                </a>
+
+                            </td>
+                        }
+                    }
+                    <td>
+                        <ul class="list-inline font-size-20 contact-links mb-0">
+                            <li class="list-inline-item px-2">
+                                <a href="" data-toggle="tooltip" data-placement="top" title="Message"><i class="bx bx-message-square-dots"></i></a>
+                                @*<a href=@Url.Action("Index","ContactsProfile", new { empId=@emp.Id }) data-toggle="tooltip" data-placement="top" title="Message"><i class="bx bx-message-square-dots"></i></a>*@
+                            </li>
+                            <li class="list-inline-item px-2">
+                                @*<a asp-controller="ContactsProfile" asp-action="MyActionSubmit" asp-route-id=@emp.Id data-toggle="tooltip" data-placement="top" title="Profile">
+                                *@
+                                @*<a asp-page="/ContactsProfile" asp-route-id="@emp.Id" data-toggle="tooltip" data-placement="top" title="Profile"><i class="bx bx-user-circle"></i></a>*@
+                                @*<a href=@Url.Action("Index","CustomersProfile", new { custId=@cust.CustomerId }) data-toggle="tooltip" data-placement="top" title="Profile"><i class="bx bx-user-circle"></i></a>*@
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+     </div> </div> </div> </div> </div>
+
+     @*
+    <div class="row clearfix">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="table-responsive">
+                                <table class="table table-hover attendance_list">
+                                    <thead>
+                                        <tr>
+                                            <th>Employee(s) Name</th>
+                                            <th>1</th>
+                                            <th>2</th>
+                                            <th>3</th>
+                                            <th>4</th>
+                                            <th>5</th>
+                                            <th>6</th>
+                                            <th>7</th>
+                                            <th>8</th>
+                                            <th>9</th>
+                                            <th>10</th>
+                                            <th>11</th>
+                                            <th>12</th>
+                                            <th>13</th>
+                                            <th>14</th>
+                                            <th>15</th>
+                                            <th>16</th>
+                                            <th>17</th>
+                                            <th>18</th>
+                                            <th>19</th>
+                                            <th>20</th>
+                                            <th>22</th>
+                                            <th>23</th>
+                                            <th>24</th>
+                                            <th>25</th>
+                                            <th>26</th>
+                                            <th>27</th>
+                                            <th>28</th>
+                                            <th>29</th>
+                                            <th>30</th>
+                                            <th>31</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>John Doe</td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tim Hank</td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Frank Camly</td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gary Camara</td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fidel Tonn</td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tim Hank</td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Maryam Amiri</td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hossein Shams</td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                            <td><i class="icon-check"></i> </td>                                            
+                                            <td><i class="icon-check"></i> </td>
+
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-close"></i> </td>
+                                            <td><i class="icon-check"></i> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            *@
+
+    <!-- Button trigger modal -->
+    @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Launch demo modal
+        </button>*@
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@*</div>*@
+
+    <script>
+        //function functionName() {
+        //    // code to be executed
+        //    var element = document.getElementById("svg1");
+        //    // Instead of .addClass("newclass")
+        //    element.setAttribute("class", "fa fa-times");
+        //    // Instead of .removeClass("newclass")
+        //    //element.setAttribute("class", "oldclass");
+        //}
+        function openModal() {
+            $('#usermodal').modal('show');
+        }
+
+    </script>
+
+    <!-- JAVASCRIPT -->
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assets/libs/node-waves/waves.min.js"></script>
+    <script src="~/assets/js/lang/jquery.multiLanguage.js"></script>
+
+    <script src="~/assets/js/app.js"></script>
