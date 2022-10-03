@@ -1,7 +1,6 @@
 ﻿using HRMS.Data;
 using HRMS.Models;
 using HRMS.ViewModels;
-using HRMS.ViewModels.Employees;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -77,7 +76,8 @@ namespace HRMS.Employees
                          AttendanceList = pd,
                      }).ToList();
 
-
+            //EmployeesAttendanceReportListViewModel employeesAttendances = new EmployeesAttendanceReportListViewModel();
+            //employeesAttendances.EmployeeList = employeesAttendances2.EmployeeList
             //var orders = from s in Context.Attendance
 
             //             select s;
@@ -104,9 +104,9 @@ namespace HRMS.Employees
         }
 
         [HttpPost]
-        public IActionResult Index(Attendance attendance)
+        public IActionResult MarkAttendance(Attendance attendance)
         {
-            
+            attendance.CreatedOn = DateTime.Now;
             this.Context.Attendance.Add(attendance);
             this.Context.SaveChanges();
             return RedirectToAction("Index");
