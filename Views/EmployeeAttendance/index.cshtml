@@ -90,7 +90,7 @@
                                                     <div class="form-group mb-0">
 
                                                         <div class="dropdown">
-                                                            <select id="EmployeeId" name="EmployeeId" asp-items="ViewBag.EmployeeList" class="form-control dropdown-toggle">
+                                                            <select id="EmployeeId" name="EmployeeId" multiple asp-items="ViewBag.EmployeeList" class="form-control dropdown-toggle">
                                                                 <option value="0">--</option>
                                                             </select>
                                                         </div>
@@ -1534,3 +1534,17 @@
 </body>
 
 </html>
+@section Scripts{
+  
+    <script type="text/javascript">
+        $(document).ready(function() {
+        
+    });
+
+        $(function () {
+            $('#EmployeeId').multiselect({
+                includeSelectAllOption: true
+            });
+        });
+    </script>
+}
