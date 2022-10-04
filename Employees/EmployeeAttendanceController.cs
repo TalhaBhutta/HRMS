@@ -18,8 +18,9 @@ namespace HRMS.Employees
         //private readonly ILogger<HomeController> _logger;
         //private EmployeeDBContext Context { get; }
         private ApplicationDBContext Context { get; }
+        public List<string> AllDaysOfWeekList = new List<string>();
 
-        
+
 
         public EmployeeAttendanceController(ApplicationDBContext _context, UserManager<ApplicationUser> userManager)
         {
@@ -28,75 +29,35 @@ namespace HRMS.Employees
 
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string SelectedMonth, string SelectedYear)
         {
-            //var q = (from pd in Context.Attendance
-            //         join od in Context.Employee on pd.Id equals od.Id
-            //         orderby od.Id
-            //         select new
-            //         {
-            //             Employee = od,
-            //             Id = pd.Id,
-            //             EmployeeId = pd.EmployeeId,
-            //             DepartmentID = pd.DepartmentID,
-            //             MarkAttendanceBY = pd.MarkAttendanceBY,
-            //             Year = pd.Year,
-            //             Month = pd.Month,
-            //             IsLate = pd.IsLate,
-            //             IsHalfDay = pd.IsHalfDay,
-            //             CheckInTime = pd.CheckInTime,
-            //             CheckOutTime = pd.CheckOutTime,
-            //             AssignmentId = pd.AssignmentId,
-            //             TimesheetId = pd.TimesheetId,
-            //             ManualCheckInLat = pd.ManualCheckInLat,
-            //             ManualCheckInLong = pd.ManualCheckInLong,
-            //             ManualCheckOutLat = pd.ManualCheckOutLat,
-            //             ManualCheckOutLong = pd.ManualCheckOutLong,
-            //             ManualOutOfRangeCheckIn = pd.ManualOutOfRangeCheckIn,
-            //             ManualOutOfRangeCheckOut = pd.ManualOutOfRangeCheckOut,
-            //             CheckInLat = pd.CheckInLat,
-            //             CheckInLong = pd.CheckInLong,
-            //             CheckOutLat = pd.CheckOutLat,
-            //             CheckOutLong = pd.CheckOutLong,
-            //             OutOfRangeCheckIn = pd.OutOfRangeCheckIn,
-            //             OutOfRangeCheckOut = pd.OutOfRangeCheckOut,
-            //             NoShow = pd.NoShow,
-            //             InvoiceId = pd.InvoiceId,
-            //             CreatedOn = pd.CreatedOn,
-            //             CreatedBy = pd.CreatedBy,
-            //             ModifiedOn = pd.ModifiedOn,
-            //             ModifiedBy = pd.ModifiedBy
-            //         }).ToList();
+            int mon, year, noOfDays = 0;
+
+            if (SelectedMonth == null || SelectedYear == null)
+            {
+                SelectedMonth = DateTime.Now.ToString("MM");
+                SelectedYear = DateTime.Now.ToString("yyyy");
+            }
+
+
+
+            mon = int.Parse(SelectedMonth);
+            year = int.Parse(SelectedYear);
+
+            noOfDays = TotalNumberOfDaysInMonth(year, mon);
+            AllDaysOfWeekList = GetDaysOfWeek(year, mon, noOfDays);
+            ViewBag.data= AllDaysOfWeekList;
 
             var employeesAttendances = (from pd in Context.Attendance
-                     join od in Context.Employee on pd.Id equals od.Id
-                     select new EmployeesAttendanceReportViewModel
-                     {
-                         EmployeeList = od,
-                         AttendanceList = pd,
-                     }).ToList();
+                                        join od in Context.Employee on pd.Id equals od.Id
+                                        where pd.CheckInTime.Value.Month == mon
+                             && pd.CheckInTime.Value.Year == year
+                                        select new EmployeesAttendanceReportViewModel
+                                        {
+                                            EmployeeList = od,
+                                            AttendanceList = pd,
+                                        }).ToList();
 
-            //EmployeesAttendanceReportListViewModel employeesAttendances = new EmployeesAttendanceReportListViewModel();
-            //employeesAttendances.EmployeeList = employeesAttendances2.EmployeeList
-            //var orders = from s in Context.Attendance
-
-            //             select s;
-
-
-            //    orders = orders.Where(s => s..ToUpper().Contains(searchString.ToUpper())
-            //                           || s.Email.ToUpper().Contains(searchString.ToUpper())
-            //        || s.Orderstatus.ToUpper().Contains(searchString.ToUpper()));
-
-
-
-            //var results = (from a in Context.Attendance
-            //               join e in Context.Employee on a.EmployeeId equals e.Id
-            //               where a.EmployeeId == e.Id
-            //               select new EmployeesAttendanceReportViewModel()
-            //               {
-            //                   EmployeeName = e.FirstName + ' ' + e.LastName,
-            //                   EmployeeAttendance = Context.Attendance.Where(a => a.EmployeeId == e.Id).ToList()
-            //               }).ToList();
 
             ViewData["EmployeeList"] = new SelectList(Context.Employee, "Id", "FirstName");
 
@@ -111,5 +72,30 @@ namespace HRMS.Employees
             this.Context.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        public int TotalNumberOfDaysInMonth(int year, int month)
+        {
+           
+            
+
+            return DateTime.DaysInMonth(year, month);
+        }
+
+        public List<string> GetDaysOfWeek(int year, int month,int noOfDays)
+        {
+            List<string> DaysOfWeekList = new List<string>();
+
+            for(int i = 1; i <= noOfDays; i++)
+            {
+                DateTime dateValue = new DateTime(year, month, i);
+                DaysOfWeekList.Add(dateValue.ToString("ddd"));
+            }
+           
+
+            return DaysOfWeekList;
+        }
+
+
+
     }
 }

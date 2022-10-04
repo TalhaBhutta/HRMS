@@ -11,6 +11,7 @@
     ViewBag.pTitle = "Employee Attendance";
     ViewBag.pageTitle = "Attendance";
     Layout = "~/Views/_Shared/_Layout.cshtml";
+    int count = 1;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -25,6 +26,145 @@
 </head>
 
 <body>
+    @*--------Filter Part----------*@
+    <div class="border border-bottom-0 border-start-0 border-end-0 d bg-white">
+        <form action="" id="filter-form">
+            <div class="d-lg-flex d-md-flex d-block flex-wrap filter-box">
+                <div class="select-box d-flex py-2 pr-2 border-right-grey border-right-grey-sm-0">
+                    <p class="mb-0 pr-3 f-14 text-dark-grey d-flex align-items-center">Employee</p>
+                    <div class="select-status">
+                        <div class="dropdown">
+                            <select class="dropdown-toggle form-control" data-bs-toggle="dropdown">
+                                <option class="fw-bold">All</option>
+                                <option>Anjali Mitchell</option>
+                                <option>Deja White</option>
+                                <option>Dr. Darrion Graham</option>
+                                <option>Kristoffer Kilback</option>
+                                <option>Krystel Gutkowski</option>
+                                <option>Luis Wilkinson</option>
+                                <option>Mr. Jaylin Schiller Jr.</option>
+                                <option>Mrs. Arielle Hilpert</option>
+                                <option>Prof. Ellis Ritchie</option>
+                                <option>Verna Fahey</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select-box d-flex py-2 px-lg-2 px-md-2 px-0 border-right-grey border-right-grey-sm-0">
+                    <p class="mb-0 pr-3 f-14 text-dark-grey d-flex align-items-center">Department</p>
+                    <div class="select-status">
+                        <div class="dropdown">
+                            <select class="form-control dropdown-toggle" name="department" id="department" data-live-search="true">
+                                <option value="all">All</option>
+                                <option value="1">Marketing</option>
+                                <option value="2">Sales</option>
+                                <option value="3">Human Resources</option>
+                                <option value="4">Public Relations</option>
+                                <option value="5">Research</option>
+                                <option value="6">Finance</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select-box d-flex py-2 px-lg-2 px-md-2 px-0 border-right-grey border-right-grey-sm-0">
+                    <p class="mb-0 pr-3 f-14 text-dark-grey d-flex align-items-center">Month</p>
+                    <div class="select-status">
+                        <div class="dropdown">
+                            <select class="form-control dropdown-toggle" name="month" id="filterMonth" data-live-search="true"
+                                    data-size="8" tabindex="null">
+                                <option selected="" value="01">
+                                    January
+                                </option>
+                                <option value="02">
+                                    February
+                                </option>
+                                <option value="03">
+                                    March
+                                </option>
+                                <option value="04">
+                                    April
+                                </option>
+                                <option value="05">
+                                    May
+                                </option>
+                                <option value="06">
+                                    June
+                                </option>
+                                <option value="07">
+                                    July
+                                </option>
+                                <option value="08">
+                                    August
+                                </option>
+                                <option value="09">
+                                    September
+                                </option>
+                                <option value="10">
+                                    October
+                                </option>
+                                <option value="11">
+                                    November
+                                </option>
+                                <option value="12">
+                                    December
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select-box d-flex py-2 px-lg-2 px-md-2 px-0 border-right-grey border-right-grey-sm-0">
+                    <p class="mb-0 pr-3 f-14 text-dark-grey d-flex align-items-center">Year</p>
+                    <div class="select-status">
+                        <div class="dropdown">
+                            <select class="form-control" id="filterYear" name="year">
+                                <option selected="" value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                                <option value="2019">2019</option>
+                                <option value="2018">2018</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="select-box d-flex py-2 px-lg-2 px-md-2 px-0 border-right-grey border-right-grey-sm-0">
+                    <p class="mb-0 pr-3 f-14 text-dark-grey d-flex align-items-center">Late</p>
+                    <div class="select-status">
+                        <div class="dropdown">
+                            <select class="form-control dropdown-toggle" name="late" id="late" tabindex="null">
+                                <option value="all">All</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- RESET START -->
+                <div class="select-box d-flex py-1 px-lg-2 px-md-2 px-0">
+                    <button type="button" class="btn-secondary rounded f-14 p-2 btn-xs d-none" id="reset-filters">
+                        <svg class="svg-inline--fa fa-times-circle fa-w-16 mr-1" aria-hidden="true" focusable="false"
+                             data-prefix="fa" data-icon="times-circle" role="img" xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 512 512" data-fa-i2svg="">
+                            <path fill="currentColor"
+                                  d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z">
+                            </path>
+                        </svg><!-- <i class="fa fa-times-circle mr-1"></i> Font Awesome fontawesome.com -->
+                        Clear
+                    </button>
+                </div>
+                <!-- RESET END -->
+            </div>
+        </form>
+    </div>
+
+    @*--------Filter Part END----------*@
     <div class=" pt-5">
         <div class="row">
             <div class="col-12">
@@ -170,7 +310,7 @@
 
                                                         <div class="dropdown">
                                                             <select name="Month" id="month" data-live-search="true" class="form-control dropdown-toggle select-picker" data-size="8">
-                                                                <option value="">--</option>
+                                                                <option selected="" value="">--</option>
                                                                 <option value="01">
                                                                     January
                                                                 </option>
@@ -195,7 +335,7 @@
                                                                 <option value="08">
                                                                     August
                                                                 </option>
-                                                                <option selected="" value="09">
+                                                                <option value="09">
                                                                     September
                                                                 </option>
                                                                 <option value="10">
@@ -444,36 +584,17 @@
                             <thead>
                                 <tr>
                                     <th class="px-2" style="vertical-align: middle;">Employee</th>
-                                    <th class="px-2">1 <br> <span class="text-dark-grey">Th</span></th>
-                                    <th class="px-2">2 <br> <span class="text-dark-grey">Fr</span></th>
-                                    <th class="px-2">3 <br> <span class="text-dark-grey">Sa</span></th>
-                                    <th class="px-2">4 <br> <span class="text-dark-grey">Su</span></th>
-                                    <th class="px-2">5 <br> <span class="text-dark-grey">Mo</span></th>
-                                    <th class="px-2">6 <br> <span class="text-dark-grey">Tu</span></th>
-                                    <th class="px-2">7 <br> <span class="text-dark-grey">We</span></th>
-                                    <th class="px-2">8 <br> <span class="text-dark-grey">Th</span></th>
-                                    <th class="px-2">9 <br> <span class="text-dark-grey">Fr</span></th>
-                                    <th class="px-2">10 <br> <span class="text-dark-grey">Sa</span></th>
-                                    <th class="px-2">11 <br> <span class="text-dark-grey">Su</span></th>
-                                    <th class="px-2">12 <br> <span class="text-dark-grey">Mo</span></th>
-                                    <th class="px-2">13 <br> <span class="text-dark-grey">Tu</span></th>
-                                    <th class="px-2">14 <br> <span class="text-dark-grey">We</span></th>
-                                    <th class="px-2">15 <br> <span class="text-dark-grey">Th</span></th>
-                                    <th class="px-2">16 <br> <span class="text-dark-grey">Fr</span></th>
-                                    <th class="px-2">17 <br> <span class="text-dark-grey">Sa</span></th>
-                                    <th class="px-2">18 <br> <span class="text-dark-grey">Su</span></th>
-                                    <th class="px-2">19 <br> <span class="text-dark-grey">Mo</span></th>
-                                    <th class="px-2">20 <br> <span class="text-dark-grey">Tu</span></th>
-                                    <th class="px-2">21 <br> <span class="text-dark-grey">We</span></th>
-                                    <th class="px-2">22 <br> <span class="text-dark-grey">Th</span></th>
-                                    <th class="px-2">23 <br> <span class="text-dark-grey">Fr</span></th>
-                                    <th class="px-2">24 <br> <span class="text-dark-grey">Sa</span></th>
-                                    <th class="px-2">25 <br> <span class="text-dark-grey">Su</span></th>
-                                    <th class="px-2">26 <br> <span class="text-dark-grey">Mo</span></th>
-                                    <th class="px-2">27 <br> <span class="text-dark-grey">Tu</span></th>
-                                    <th class="px-2">28 <br> <span class="text-dark-grey">We</span></th>
-                                    <th class="px-2">29 <br> <span class="text-dark-grey">Th</span></th>
-                                    <th class="px-2">30 <br> <span class="text-dark-grey">Fr</span></th>
+                                    @foreach (var item in ViewBag.data)
+                                    {
+                                        <th class="px-2">@count <br> <span class="text-dark-grey">@item</span></th>
+                                        count++;
+                                    }
+                                    @*foreach  (var items in ViewBag.data)
+                                    {
+                                    <th class="px-2">@count <br> <span class="text-dark-grey">@items</span></th>
+                                    count++;
+                                    }*@
+
                                     <th class="text-right px-2">Total</th>
                                 </tr>
                             </thead>
@@ -518,7 +639,7 @@
 
 
                                             @*-------------Attendance Details Modal Start (x)----------------------------*@
-                                           
+
 
                                             @*-------------Attendance Details Modal Ends (x)----------------------------*@
                                         </td>
@@ -996,555 +1117,577 @@
                 </div>
             </div>
         </div>
-         <div class="modal" id="absent-modal">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
+        <div class="modal" id="absent-modal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
 
-                                                        <!-- Modal Header -->
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">Attendance Details</h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal"></button>
-                                                        </div>
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Attendance Details</h5>
+                        <button type="button" class="btn-close"
+                                data-bs-dismiss="modal"></button>
+                    </div>
 
-                                                        <!-- Modal body -->
-                                                        <div class="modal-body">
-                                                            <div class="row">
-                                                                <div class="col-md-12 mb-4">
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-4">
 
-                                                                    <div class="media align-items-center mw-250 d-flex">
-                                                                        <a href="#"
-                                                                       class="position-relative">
-                                                                            <img src="https://i.pravatar.cc/300?u=admin@example.com"
-                                                                             class="mr-2 taskEmployeeImg rounded-circle"
-                                                                             alt="Loy Bode" title="Loy Bode">
-                                                                        </a>
-                                                                        <div class="media-body px-2">
-                                                                            <h5 class="mb-0 f-12">
-                                                                                <a href="#"
-                                                                               class="text-darkest-grey ">Loy Bode</a>
-                                                                                <span class="badge badge-secondary">
-                                                                                    It's
-                                                                                    you
-                                                                                </span>
-                                                                            </h5>
-                                                                            <p class="mb-0 f-12 text-dark-grey">
-                                                                                Trainee
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-12">
+                                <div class="media align-items-center mw-250 d-flex">
+                                    <a href="#"
+                                       class="position-relative">
+                                        <img src="https://i.pravatar.cc/300?u=admin@example.com"
+                                             class="mr-2 taskEmployeeImg rounded-circle"
+                                             alt="Loy Bode" title="Loy Bode">
+                                    </a>
+                                    <div class="media-body px-2">
+                                        <h5 class="mb-0 f-12">
+                                            <a href="#"
+                                               class="text-darkest-grey ">Loy Bode</a>
+                                            <span class="badge badge-secondary">
+                                                It's
+                                                you
+                                            </span>
+                                        </h5>
+                                        <p class="mb-0 f-12 text-dark-grey">
+                                            Trainee
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
 
-                                                                    <h5 class="f-w-500 f-15 d-flex justify-content-between">
-                                                                        Date - 01-09-2022 <span class="badge badge-info f-14"
-                                                                                            style="background-color: #ff0000">
-                                                                            Day
-                                                                            Shift
-                                                                        </span>
-                                                                    </h5>
+                                <h5 class="f-w-500 f-15 d-flex justify-content-between">
+                                    Date - 01-09-2022 <span class="badge badge-info f-14"
+                                                            style="background-color: #ff0000">
+                                        Day
+                                        Shift
+                                    </span>
+                                </h5>
 
-                                                                    <form method="POST" id="attendance-container"
-                                                                      autocomplete="off">
-                                                                        <input type="password" class="autocomplete-password"
-                                                                           style="opacity: 0;position: absolute;">
-                                                                        <input type="search" class="autocomplete-password"
-                                                                           style="opacity: 0;position: absolute;">
+                                <form method="POST" id="attendance-container"
+                                      autocomplete="off">
+                                    <input type="password" class="autocomplete-password"
+                                           style="opacity: 0;position: absolute;">
+                                    <input type="search" class="autocomplete-password"
+                                           style="opacity: 0;position: absolute;">
 
 
 
-                                                                        <input type="hidden" id="redirect_url"
-                                                                           name="redirect_url" value="">
+                                    <input type="hidden" id="redirect_url"
+                                           name="redirect_url" value="">
 
-                                                                        <input type="hidden" name="_token"
-                                                                           value="DCQnrnaorULf84Nf6JoQis930ZnitWuYisD6NTQg">
+                                    <input type="hidden" name="_token"
+                                           value="DCQnrnaorULf84Nf6JoQis930ZnitWuYisD6NTQg">
 
-                                                                        <input type="hidden" name="attendance_date"
-                                                                           value="2022-09-01">
-                                                                        <input type="hidden" name="user_id" value="1">
+                                    <input type="hidden" name="attendance_date"
+                                           value="2022-09-01">
+                                    <input type="hidden" name="user_id" value="1">
 
-                                                                        <div class="row">
+                                    <div class="row">
 
-                                                                            <div class="col-lg-4 col-md-6">
-                                                                                <div class="bootstrap-timepicker timepicker">
-                                                                                    <div class="form-group my-3 a-timepicker">
-                                                                                        <label class="f-14 text-dark-grey mb-12"
-                                                                                           data-label="true"
-                                                                                           for="clock-in-time">
-                                                                                            Clock In
-                                                                                            <sup class="f-14 mr-1">*</sup>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="bootstrap-timepicker timepicker">
+                                                <div class="form-group my-3 a-timepicker">
+                                                    <label class="f-14 text-dark-grey mb-12"
+                                                           data-label="true"
+                                                           for="clock-in-time">
+                                                        Clock In
+                                                        <sup class="f-14 mr-1">*</sup>
 
-                                                                                        </label>
+                                                    </label>
 
-                                                                                        <input type="text"
-                                                                                           class="form-control height-35 f-14"
-                                                                                           placeholder="e.g. 10:00 AM"
-                                                                                           value="" name="clock_in_time"
-                                                                                           id="clock-in-time">
+                                                    <input type="text"
+                                                           class="form-control height-35 f-14"
+                                                           placeholder="e.g. 10:00 AM"
+                                                           value="" name="clock_in_time"
+                                                           id="clock-in-time">
 
-                                                                                    </div>
-                                                                                    <div class="bootstrap-timepicker-widget dropdown-menu">
-                                                                                        <table>
-                                                                                            <tbody>
-                                                                                                <tr>
-                                                                                                    <td>
-                                                                                                        <a href="#"
-                                                                                                       data-action="incrementHour">
-                                                                                                            <i class="glyphicon glyphicon-chevron-up"></i>
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                    <td class="separator">
-                                                                                                        &nbsp;
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <a href="#"
-                                                                                                       data-action="incrementMinute">
-                                                                                                            <i class="glyphicon glyphicon-chevron-up"></i>
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                    <td class="separator">
-                                                                                                        &nbsp;
-                                                                                                    </td>
-                                                                                                    <td class="meridian-column">
-                                                                                                        <a href="#"
-                                                                                                       data-action="toggleMeridian">
-                                                                                                            <i class="glyphicon glyphicon-chevron-up"></i>
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                                <tr>
-                                                                                                    <td>
-                                                                                                        <input type="text"
-                                                                                                           name="hour"
-                                                                                                           class="form-control bootstrap-timepicker-hour"
-                                                                                                           maxlength="2">
-                                                                                                    </td>
-                                                                                                    <td class="separator">
-                                                                                                        :
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <input type="text"
-                                                                                                           name="minute"
-                                                                                                           class="form-control bootstrap-timepicker-minute"
-                                                                                                           maxlength="2">
-                                                                                                    </td>
-                                                                                                    <td class="separator">
-                                                                                                        &nbsp;
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <input type="text"
-                                                                                                           name="meridian"
-                                                                                                           class="form-control bootstrap-timepicker-meridian"
-                                                                                                           maxlength="2">
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                                <tr>
-                                                                                                    <td>
-                                                                                                        <a href="#"
-                                                                                                       data-action="decrementHour">
-                                                                                                            <i class="glyphicon glyphicon-chevron-down"></i>
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                    <td class="separator">
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <a href="#"
-                                                                                                       data-action="decrementMinute">
-                                                                                                            <i class="glyphicon glyphicon-chevron-down"></i>
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                    <td class="separator">
-                                                                                                        &nbsp;
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <a href="#"
-                                                                                                       data-action="toggleMeridian">
-                                                                                                            <i class="glyphicon glyphicon-chevron-down"></i>
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="col-lg-3 col-md-6">
-                                                                                <div class="form-group my-3 a-timepicker">
-                                                                                    <label class="f-14 text-dark-grey mb-12"
-                                                                                       data-label=""
-                                                                                       for="clock-in-ip">
-                                                                                        Clock In IP
-
-                                                                                    </label>
-
-                                                                                    <input type="text"
-                                                                                       class="form-control height-35 f-14"
-                                                                                       placeholder="e.g. 10:00 AM"
-                                                                                       value="59.103.108.17"
-                                                                                       name="clock_in_ip" id="clock-in-ip">
-
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="col-lg-4 col-md-6">
-                                                                                <div class="form-group my-3 mr-0 mr-lg-2 mr-md-2">
-                                                                                    <label class="f-14 text-dark-grey mb-12"
-                                                                                       data-label="" for="lateday">
-                                                                                        Late
-
-                                                                                    </label>
-
-                                                                                    <div class="custom-control custom-switch">
-                                                                                        <input type="checkbox" name="late"
-                                                                                           class="custom-control-input"
-                                                                                           id="lateday">
-                                                                                        <label class="custom-control-label cursor-pointer f-14"
-                                                                                           for="lateday"></label>
-                                                                                    </div>
-
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                        <div class="row">
-
-                                                                            <div class="col-lg-4 col-md-6">
-                                                                                <div class="bootstrap-timepicker timepicker">
-                                                                                    <div class="form-group my-3">
-                                                                                        <label class="f-14 text-dark-grey mb-12"
-                                                                                           data-label=""
-                                                                                           for="clock-out">
-                                                                                            Clock Out
-
-                                                                                        </label>
-
-                                                                                        <input type="text"
-                                                                                           class="form-control height-35 f-14"
-                                                                                           placeholder="e.g. 10:00 AM"
-                                                                                           value="" name="clock_out_time"
-                                                                                           id="clock-out">
-
-                                                                                    </div>
-                                                                                    <div class="bootstrap-timepicker-widget dropdown-menu">
-                                                                                        <table>
-                                                                                            <tbody>
-                                                                                                <tr>
-                                                                                                    <td>
-                                                                                                        <a href="#"
-                                                                                                       data-action="incrementHour">
-                                                                                                            <i class="glyphicon glyphicon-chevron-up"></i>
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                    <td class="separator">
-                                                                                                        &nbsp;
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <a href="#"
-                                                                                                       data-action="incrementMinute">
-                                                                                                            <i class="glyphicon glyphicon-chevron-up"></i>
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                    <td class="separator">
-                                                                                                        &nbsp;
-                                                                                                    </td>
-                                                                                                    <td class="meridian-column">
-                                                                                                        <a href="#"
-                                                                                                       data-action="toggleMeridian">
-                                                                                                            <i class="glyphicon glyphicon-chevron-up"></i>
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                                <tr>
-                                                                                                    <td>
-                                                                                                        <input type="text"
-                                                                                                           name="hour"
-                                                                                                           class="form-control bootstrap-timepicker-hour"
-                                                                                                           maxlength="2">
-                                                                                                    </td>
-                                                                                                    <td class="separator">
-                                                                                                        :
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <input type="text"
-                                                                                                           name="minute"
-                                                                                                           class="form-control bootstrap-timepicker-minute"
-                                                                                                           maxlength="2">
-                                                                                                    </td>
-                                                                                                    <td class="separator">
-                                                                                                        &nbsp;
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <input type="text"
-                                                                                                           name="meridian"
-                                                                                                           class="form-control bootstrap-timepicker-meridian"
-                                                                                                           maxlength="2">
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                                <tr>
-                                                                                                    <td>
-                                                                                                        <a href="#"
-                                                                                                       data-action="decrementHour">
-                                                                                                            <i class="glyphicon glyphicon-chevron-down"></i>
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                    <td class="separator">
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <a href="#"
-                                                                                                       data-action="decrementMinute">
-                                                                                                            <i class="glyphicon glyphicon-chevron-down"></i>
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                    <td class="separator">
-                                                                                                        &nbsp;
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <a href="#"
-                                                                                                       data-action="toggleMeridian">
-                                                                                                            <i class="glyphicon glyphicon-chevron-down"></i>
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="col-lg-3 col-md-4">
-                                                                                <div class="form-group my-3">
-                                                                                    <label class="f-14 text-dark-grey mb-12"
-                                                                                       data-label=""
-                                                                                       for="clock-out-ip-1">
-                                                                                        Clock Out IP
-
-                                                                                    </label>
-
-                                                                                    <input type="text"
-                                                                                       class="form-control height-35 f-14"
-                                                                                       placeholder="e.g. 10:00 AM"
-                                                                                       value="59.103.108.17"
-                                                                                       name="clock_out_ip"
-                                                                                       id="clock-out-ip-1">
-
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="col-lg-2 col-md-6">
-                                                                                <div class="form-group my-3 mr-0 mr-lg-2 mr-md-2">
-                                                                                    <label class="f-14 text-dark-grey mb-12"
-                                                                                       data-label="" for="halfday">
-                                                                                        Half Day
-
-                                                                                    </label>
-
-                                                                                    <div class="custom-control custom-switch">
-                                                                                        <input type="checkbox"
-                                                                                           name="halfday"
-                                                                                           class="custom-control-input"
-                                                                                           id="halfday">
-                                                                                        <label class="custom-control-label cursor-pointer f-14"
-                                                                                           for="halfday"></label>
-                                                                                    </div>
-
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                        <div class="row">
-
-                                                                            <div class="col-lg-4 col-md-6">
-                                                                                <label class="f-14 text-dark-grey mb-12 mt-3"
-                                                                                   data-label="" for="location">
-                                                                                    Location
-
-                                                                                </label>
-                                                                                <div class="form-group mb-0">
-
-                                                                                    <div class="dropdown bootstrap-select select-picker">
-                                                                                        <select name="location"
-                                                                                            id="location"
-                                                                                            data-live-search="true"
-                                                                                            class="form-control select-picker"
-                                                                                            data-size="8">
-
-                                                                                            <option selected="" value="1">
-                                                                                                Worksuite
-                                                                                            </option>
-                                                                                        </select>
-                                                                                        <!-- <button type="button"
-                                                                                            tabindex="-1"
-                                                                                            class="btn dropdown-toggle btn-light"
-                                                                                            data-toggle="dropdown"
-                                                                                            role="combobox"
-                                                                                            aria-owns="bs-select-58"
-                                                                                            aria-haspopup="listbox"
-                                                                                            aria-expanded="false"
-                                                                                            data-id="location"
-                                                                                            title="Worksuite">
-                                                                                            <div class="filter-option">
-                                                                                                <div
-                                                                                                    class="filter-option-inner">
-                                                                                                    <div
-                                                                                                        class="filter-option-inner-inner">
-                                                                                                        Worksuite</div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </button> -->
-                                                                                        <!-- <div class="dropdown-menu ">
-                                                                                            <div class="bs-searchbox"><input
-                                                                                                    type="search"
-                                                                                                    class="form-control"
-                                                                                                    autocomplete="off"
-                                                                                                    role="combobox"
-                                                                                                    aria-label="Search"
-                                                                                                    aria-controls="bs-select-58"
-                                                                                                    aria-autocomplete="list">
-                                                                                            </div>
-                                                                                            <div class="inner show"
-                                                                                                role="listbox"
-                                                                                                id="bs-select-58"
-                                                                                                tabindex="-1">
-                                                                                                <ul class="dropdown-menu inner show"
-                                                                                                    role="presentation">
-                                                                                                </ul>
-                                                                                            </div>
-                                                                                        </div> -->
-                                                                                    </div>
-
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="col-lg-4 col-md-6">
-                                                                                <label class="f-14 text-dark-grey mb-12 mt-3"
-                                                                                   data-label="true"
-                                                                                   for="work_from_type">
-                                                                                    Working From
-                                                                                    <sup class="f-14 mr-1">*</sup>
-
-                                                                                </label>
-                                                                                <div class="form-group mb-0">
-
-                                                                                    <div class="dropdown bootstrap-select select-picker">
-                                                                                        <select name="work_from_type"
-                                                                                            id="work_from_type"
-                                                                                            data-live-search="true"
-                                                                                            class="form-control select-picker"
-                                                                                            data-size="8">
-                                                                                            <option value="office">
-                                                                                                Office
-                                                                                            </option>
-                                                                                            <option value="home">
-                                                                                                Home
-                                                                                            </option>
-                                                                                            <option value="other">
-                                                                                                Other
-                                                                                            </option>
-                                                                                        </select>
-                                                                                        <!-- <button type="button"
-                                                                                            tabindex="-1"
-                                                                                            class="btn dropdown-toggle btn-light"
-                                                                                            data-toggle="dropdown"
-                                                                                            role="combobox"
-                                                                                            aria-owns="bs-select-59"
-                                                                                            aria-haspopup="listbox"
-                                                                                            aria-expanded="false"
-                                                                                            data-id="work_from_type"
-                                                                                            title="Office">
-                                                                                            <div class="filter-option">
-                                                                                                <div
-                                                                                                    class="filter-option-inner">
-                                                                                                    <div
-                                                                                                        class="filter-option-inner-inner">
-                                                                                                        Office</div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </button> -->
-                                                                                        <!-- <div class="dropdown-menu ">
-                                                                                            <div class="bs-searchbox"><input
-                                                                                                    type="search"
-                                                                                                    class="form-control"
-                                                                                                    autocomplete="off"
-                                                                                                    role="combobox"
-                                                                                                    aria-label="Search"
-                                                                                                    aria-controls="bs-select-59"
-                                                                                                    aria-autocomplete="list">
-                                                                                            </div>
-                                                                                            <div class="inner show"
-                                                                                                role="listbox"
-                                                                                                id="bs-select-59"
-                                                                                                tabindex="-1">
-                                                                                                <ul class="dropdown-menu inner show"
-                                                                                                    role="presentation">
-                                                                                                </ul>
-                                                                                            </div>
-                                                                                        </div> -->
-                                                                                    </div>
-
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                        <div class="row">
-                                                                            <div class="col-lg-4 col-md-6" id="otherPlace"
-                                                                             style="display:none">
-                                                                                <div class="form-group my-3">
-                                                                                    <label class="f-14 text-dark-grey mb-12"
-                                                                                       data-label="true"
-                                                                                       for="working_from">
-                                                                                        Other Locations
-                                                                                        <sup class="f-14 mr-1">*</sup>
-
-                                                                                    </label>
-
-                                                                                    <input type="text"
-                                                                                       class="form-control height-35 f-14"
-                                                                                       placeholder="" value=""
-                                                                                       name="working_from"
-                                                                                       id="working_from">
-
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Modal footer -->
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-outline-danger"
-                                                                data-bs-dismiss="modal">
-                                                                Close
-                                                            </button>
-                                                            <button type="button" class="btn btn-primary">Save</button>
-                                                        </div>
-
-                                                    </div>
+                                                </div>
+                                                <div class="bootstrap-timepicker-widget dropdown-menu">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <a href="#"
+                                                                       data-action="incrementHour">
+                                                                        <i class="glyphicon glyphicon-chevron-up"></i>
+                                                                    </a>
+                                                                </td>
+                                                                <td class="separator">
+                                                                    &nbsp;
+                                                                </td>
+                                                                <td>
+                                                                    <a href="#"
+                                                                       data-action="incrementMinute">
+                                                                        <i class="glyphicon glyphicon-chevron-up"></i>
+                                                                    </a>
+                                                                </td>
+                                                                <td class="separator">
+                                                                    &nbsp;
+                                                                </td>
+                                                                <td class="meridian-column">
+                                                                    <a href="#"
+                                                                       data-action="toggleMeridian">
+                                                                        <i class="glyphicon glyphicon-chevron-up"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text"
+                                                                           name="hour"
+                                                                           class="form-control bootstrap-timepicker-hour"
+                                                                           maxlength="2">
+                                                                </td>
+                                                                <td class="separator">
+                                                                    :
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text"
+                                                                           name="minute"
+                                                                           class="form-control bootstrap-timepicker-minute"
+                                                                           maxlength="2">
+                                                                </td>
+                                                                <td class="separator">
+                                                                    &nbsp;
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text"
+                                                                           name="meridian"
+                                                                           class="form-control bootstrap-timepicker-meridian"
+                                                                           maxlength="2">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <a href="#"
+                                                                       data-action="decrementHour">
+                                                                        <i class="glyphicon glyphicon-chevron-down"></i>
+                                                                    </a>
+                                                                </td>
+                                                                <td class="separator">
+                                                                </td>
+                                                                <td>
+                                                                    <a href="#"
+                                                                       data-action="decrementMinute">
+                                                                        <i class="glyphicon glyphicon-chevron-down"></i>
+                                                                    </a>
+                                                                </td>
+                                                                <td class="separator">
+                                                                    &nbsp;
+                                                                </td>
+                                                                <td>
+                                                                    <a href="#"
+                                                                       data-action="toggleMeridian">
+                                                                        <i class="glyphicon glyphicon-chevron-down"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6">
+                                            <div class="form-group my-3 a-timepicker">
+                                                <label class="f-14 text-dark-grey mb-12"
+                                                       data-label=""
+                                                       for="clock-in-ip">
+                                                    Clock In IP
+
+                                                </label>
+
+                                                <input type="text"
+                                                       class="form-control height-35 f-14"
+                                                       placeholder="e.g. 10:00 AM"
+                                                       value="59.103.108.17"
+                                                       name="clock_in_ip" id="clock-in-ip">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="form-group my-3 mr-0 mr-lg-2 mr-md-2">
+                                                <label class="f-14 text-dark-grey mb-12"
+                                                       data-label="" for="lateday">
+                                                    Late
+
+                                                </label>
+
+                                                <div class="custom-control custom-switch">
+                                                    <input type="checkbox" name="late"
+                                                           class="custom-control-input"
+                                                           id="lateday">
+                                                    <label class="custom-control-label cursor-pointer f-14"
+                                                           for="lateday"></label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="bootstrap-timepicker timepicker">
+                                                <div class="form-group my-3">
+                                                    <label class="f-14 text-dark-grey mb-12"
+                                                           data-label=""
+                                                           for="clock-out">
+                                                        Clock Out
+
+                                                    </label>
+
+                                                    <input type="text"
+                                                           class="form-control height-35 f-14"
+                                                           placeholder="e.g. 10:00 AM"
+                                                           value="" name="clock_out_time"
+                                                           id="clock-out">
+
+                                                </div>
+                                                <div class="bootstrap-timepicker-widget dropdown-menu">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <a href="#"
+                                                                       data-action="incrementHour">
+                                                                        <i class="glyphicon glyphicon-chevron-up"></i>
+                                                                    </a>
+                                                                </td>
+                                                                <td class="separator">
+                                                                    &nbsp;
+                                                                </td>
+                                                                <td>
+                                                                    <a href="#"
+                                                                       data-action="incrementMinute">
+                                                                        <i class="glyphicon glyphicon-chevron-up"></i>
+                                                                    </a>
+                                                                </td>
+                                                                <td class="separator">
+                                                                    &nbsp;
+                                                                </td>
+                                                                <td class="meridian-column">
+                                                                    <a href="#"
+                                                                       data-action="toggleMeridian">
+                                                                        <i class="glyphicon glyphicon-chevron-up"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text"
+                                                                           name="hour"
+                                                                           class="form-control bootstrap-timepicker-hour"
+                                                                           maxlength="2">
+                                                                </td>
+                                                                <td class="separator">
+                                                                    :
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text"
+                                                                           name="minute"
+                                                                           class="form-control bootstrap-timepicker-minute"
+                                                                           maxlength="2">
+                                                                </td>
+                                                                <td class="separator">
+                                                                    &nbsp;
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text"
+                                                                           name="meridian"
+                                                                           class="form-control bootstrap-timepicker-meridian"
+                                                                           maxlength="2">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <a href="#"
+                                                                       data-action="decrementHour">
+                                                                        <i class="glyphicon glyphicon-chevron-down"></i>
+                                                                    </a>
+                                                                </td>
+                                                                <td class="separator">
+                                                                </td>
+                                                                <td>
+                                                                    <a href="#"
+                                                                       data-action="decrementMinute">
+                                                                        <i class="glyphicon glyphicon-chevron-down"></i>
+                                                                    </a>
+                                                                </td>
+                                                                <td class="separator">
+                                                                    &nbsp;
+                                                                </td>
+                                                                <td>
+                                                                    <a href="#"
+                                                                       data-action="toggleMeridian">
+                                                                        <i class="glyphicon glyphicon-chevron-down"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-4">
+                                            <div class="form-group my-3">
+                                                <label class="f-14 text-dark-grey mb-12"
+                                                       data-label=""
+                                                       for="clock-out-ip-1">
+                                                    Clock Out IP
+
+                                                </label>
+
+                                                <input type="text"
+                                                       class="form-control height-35 f-14"
+                                                       placeholder="e.g. 10:00 AM"
+                                                       value="59.103.108.17"
+                                                       name="clock_out_ip"
+                                                       id="clock-out-ip-1">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-2 col-md-6">
+                                            <div class="form-group my-3 mr-0 mr-lg-2 mr-md-2">
+                                                <label class="f-14 text-dark-grey mb-12"
+                                                       data-label="" for="halfday">
+                                                    Half Day
+
+                                                </label>
+
+                                                <div class="custom-control custom-switch">
+                                                    <input type="checkbox"
+                                                           name="halfday"
+                                                           class="custom-control-input"
+                                                           id="halfday">
+                                                    <label class="custom-control-label cursor-pointer f-14"
+                                                           for="halfday"></label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-lg-4 col-md-6">
+                                            <label class="f-14 text-dark-grey mb-12 mt-3"
+                                                   data-label="" for="location">
+                                                Location
+
+                                            </label>
+                                            <div class="form-group mb-0">
+
+                                                <div class="dropdown bootstrap-select select-picker">
+                                                    <select name="location"
+                                                            id="location"
+                                                            data-live-search="true"
+                                                            class="form-control select-picker"
+                                                            data-size="8">
+
+                                                        <option selected="" value="1">
+                                                            Worksuite
+                                                        </option>
+                                                    </select>
+                                                    <!-- <button type="button"
+                                                        tabindex="-1"
+                                                        class="btn dropdown-toggle btn-light"
+                                                        data-toggle="dropdown"
+                                                        role="combobox"
+                                                        aria-owns="bs-select-58"
+                                                        aria-haspopup="listbox"
+                                                        aria-expanded="false"
+                                                        data-id="location"
+                                                        title="Worksuite">
+                                                        <div class="filter-option">
+                                                            <div
+                                                                class="filter-option-inner">
+                                                                <div
+                                                                    class="filter-option-inner-inner">
+                                                                    Worksuite</div>
+                                                            </div>
+                                                        </div>
+                                                    </button> -->
+                                                    <!-- <div class="dropdown-menu ">
+                                                        <div class="bs-searchbox"><input
+                                                                type="search"
+                                                                class="form-control"
+                                                                autocomplete="off"
+                                                                role="combobox"
+                                                                aria-label="Search"
+                                                                aria-controls="bs-select-58"
+                                                                aria-autocomplete="list">
+                                                        </div>
+                                                        <div class="inner show"
+                                                            role="listbox"
+                                                            id="bs-select-58"
+                                                            tabindex="-1">
+                                                            <ul class="dropdown-menu inner show"
+                                                                role="presentation">
+                                                            </ul>
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4 col-md-6">
+                                            <label class="f-14 text-dark-grey mb-12 mt-3"
+                                                   data-label="true"
+                                                   for="work_from_type">
+                                                Working From
+                                                <sup class="f-14 mr-1">*</sup>
+
+                                            </label>
+                                            <div class="form-group mb-0">
+
+                                                <div class="dropdown bootstrap-select select-picker">
+                                                    <select name="work_from_type"
+                                                            id="work_from_type"
+                                                            data-live-search="true"
+                                                            class="form-control select-picker"
+                                                            data-size="8">
+                                                        <option value="office">
+                                                            Office
+                                                        </option>
+                                                        <option value="home">
+                                                            Home
+                                                        </option>
+                                                        <option value="other">
+                                                            Other
+                                                        </option>
+                                                    </select>
+                                                    <!-- <button type="button"
+                                                        tabindex="-1"
+                                                        class="btn dropdown-toggle btn-light"
+                                                        data-toggle="dropdown"
+                                                        role="combobox"
+                                                        aria-owns="bs-select-59"
+                                                        aria-haspopup="listbox"
+                                                        aria-expanded="false"
+                                                        data-id="work_from_type"
+                                                        title="Office">
+                                                        <div class="filter-option">
+                                                            <div
+                                                                class="filter-option-inner">
+                                                                <div
+                                                                    class="filter-option-inner-inner">
+                                                                    Office</div>
+                                                            </div>
+                                                        </div>
+                                                    </button> -->
+                                                    <!-- <div class="dropdown-menu ">
+                                                        <div class="bs-searchbox"><input
+                                                                type="search"
+                                                                class="form-control"
+                                                                autocomplete="off"
+                                                                role="combobox"
+                                                                aria-label="Search"
+                                                                aria-controls="bs-select-59"
+                                                                aria-autocomplete="list">
+                                                        </div>
+                                                        <div class="inner show"
+                                                            role="listbox"
+                                                            id="bs-select-59"
+                                                            tabindex="-1">
+                                                            <ul class="dropdown-menu inner show"
+                                                                role="presentation">
+                                                            </ul>
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-6" id="otherPlace"
+                                             style="display:none">
+                                            <div class="form-group my-3">
+                                                <label class="f-14 text-dark-grey mb-12"
+                                                       data-label="true"
+                                                       for="working_from">
+                                                    Other Locations
+                                                    <sup class="f-14 mr-1">*</sup>
+
+                                                </label>
+
+                                                <input type="text"
+                                                       class="form-control height-35 f-14"
+                                                       placeholder="" value=""
+                                                       name="working_from"
+                                                       id="working_from">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger"
+                                data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-primary">Save</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
+
+    <form asp-action="Index" method="get">
+
+        <input id="SelectedMonth" style="display:none" name="SelectedMonth" type="text" class="form-control">
+        <input id="SelectedYear" style="display:none" name="SelectedYear" type="text" class="form-control">
+
+        <input type="submit" style="display:none" id="SubmitReq" value="Submit" />
+    </form>
 
 </body>
 
 </html>
 @section Scripts{
-  
-    <script type="text/javascript">
-        $(document).ready(function() {
-        
-    });
 
-        $(function () {
-            $('#EmployeeId').multiselect({
-                includeSelectAllOption: true
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            $("#filterMonth").change(function() {
+                var SelectedMonth = $('#filterMonth  :selected').val();
+                var SelectedYear = $('#filterYear  :selected').val();
+                document.getElementById('SelectedMonth').value = SelectedMonth;
+                document.getElementById('SelectedYear').value = SelectedYear;
+                $("#SubmitReq").click();
+
             });
+
+            $(function() {
+                $('#EmployeeId').multiselect({
+                    includeSelectAllOption: true
+                });
+            });
+
         });
+
+
+
+
+
     </script>
 }
