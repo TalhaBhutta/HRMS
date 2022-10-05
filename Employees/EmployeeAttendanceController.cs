@@ -39,9 +39,13 @@ namespace HRMS.Employees
                 SelectedYear = DateTime.Now.ToString("yyyy");
             }
 
-
+            
 
             mon = int.Parse(SelectedMonth);
+            DateTimeOffset dateTime = DateTimeOffset.Now;
+            dateTime = new DateTimeOffset(2008, mon, 1, 8, 6, 32,
+                                 new TimeSpan(1, 0, 0));
+
             year = int.Parse(SelectedYear);
 
             noOfDays = TotalNumberOfDaysInMonth(year, mon);
@@ -49,8 +53,8 @@ namespace HRMS.Employees
             ViewBag.data= AllDaysOfWeekList;
 
             var employeesAttendances = (from pd in Context.Attendance
-                                        join od in Context.Employee on pd.Id equals od.Id
-                                        where pd.CheckInTime.Value.Month == mon
+                                         join od in Context.Employee on pd.EmployeeId equals od.Id
+                                        where pd.Month == SelectedMonth
                              && pd.CheckInTime.Value.Year == year
                                         select new EmployeesAttendanceReportViewModel
                                         {

@@ -180,327 +180,7 @@
                         Mark Attendance
                     </button>
 
-                    <div class="modal" id="add-attendance">
-                        <form id="MarkAttendance" method="post" asp-action="MarkAttendance" asp-controller="EmployeeAttendance" class="needs-validation" enctype="multipart/form-data" novalidate>
 
-                            <div class="modal-dialog modal-xl">
-                                <div class="modal-content">
-                                    <!-- Modal Header -->
-                                    <div class="modal-header">
-                                        <h4 class="mb-0 p-20 f-21 font-weight-normal text-capitalize">
-                                            Mark Attendance
-                                        </h4>
-                                        <button type="button" class="btn-close"
-                                                data-bs-dismiss="modal"></button>
-                                    </div>
-
-                                    <!-- Modal body -->
-                                    <div class="modal-body">
-                                        <div class="add-client bg-white rounded">
-
-
-                                            <div class="row px-4">
-
-                                                <div class="col-lg-3 col-md-6">
-                                                    <label class="f-14 text-dark-grey mb-12 mt-3" data-label="" for="department_id">
-                                                        Department
-
-                                                    </label>
-                                                    <div class="form-group mb-0">
-                                                        <div class="dropdown">
-                                                            <select name="DepartmentID" id="DepartmentID" data-live-search="true" class="form-control dropdown-toggle" data-size="8">
-                                                                <option value="0">--</option>
-                                                                <option value="1">Marketing</option>
-                                                                <option value="2">Sales</option>
-                                                                <option value="3">Human Resources</option>
-                                                                <option value="4">Public Relations</option>
-                                                                <option value="5">Research</option>
-                                                                <option value="6">Finance</option>
-                                                            </select>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-9">
-                                                    <label class="f-14 text-dark-grey mb-12 mt-3" data-label="" for="department_id">
-                                                        Employee
-
-                                                    </label>
-                                                    <div class="form-group mb-0">
-
-                                                        <div class="dropdown">
-                                                            <select id="EmployeeId" name="EmployeeId" multiple asp-items="ViewBag.EmployeeList" class="form-control dropdown-toggle">
-                                                                <option value="0">--</option>
-                                                            </select>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="row px-4 pb-4">
-
-                                                <div class="col-lg-3 col-md-6">
-                                                    <label class="f-14 text-dark-grey mb-12 mt-3" data-label="" for="location">
-                                                        Location
-
-                                                    </label>
-                                                    <div class="form-group mb-0">
-
-                                                        <div class="dropdown">
-                                                            <select name="location" id="location" data-live-search="true" class="form-control dropdown-toggle" data-size="8">
-                                                                <option selected="" value="1">
-                                                                    Worksuite
-                                                                </option>
-                                                            </select>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-3 col-md-6">
-                                                    <div class="form-group my-3">
-                                                        <label class="f-14 text-dark-grey mb-12" data-label="" for="mark_attendance_by_month">
-                                                            Mark Attendance By
-
-                                                        </label>
-                                                        <div class="d-flex">
-                                                            <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
-                                                                <input type="radio" name="MarkAttendanceBY" value="month" class="form-group cursor-pointer" checked="" autocomplete="off">
-                                                                <label class=" pb-2 cursor-pointer" for="mark_attendance_by_month">Month</label>
-                                                            </div>
-                                                            <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
-                                                                <input type="radio" name="MarkAttendanceBY" value="date" class="form-group cursor-pointer" autocomplete="off">
-                                                                <label class=" pb-2 cursor-pointer" for="mark_attendance_by_dates">Date</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-3 col-md-6 attendance_by_month">
-                                                    <label class="f-14 text-dark-grey mb-12 mt-3" data-label="true" for="year">
-                                                        Year
-                                                        <sup class="f-14 mr-1">*</sup>
-
-                                                    </label>
-                                                    <div class="form-group mb-0">
-
-                                                        <div class="dropdown">
-                                                            <select name="Year" id="year" data-live-search="true" class="form-control dropdown-toggle select-picker" data-size="8">
-                                                                <option value="">--</option>
-                                                                <option selected="" value="2022">2022</option>
-                                                                <option value="2021">2021</option>
-                                                                <option value="2020">2020</option>
-                                                                <option value="2019">2019</option>
-                                                                <option value="2018">2018</option>
-                                                            </select>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-3 col-md-6 attendance_by_month">
-                                                    <label class="f-14 text-dark-grey mb-12 mt-3" data-label="true" for="month">
-                                                        Month
-                                                        <sup class="f-14 mr-1">*</sup>
-
-                                                    </label>
-                                                    <div class="form-group mb-0">
-
-                                                        <div class="dropdown">
-                                                            <select name="Month" id="month" data-live-search="true" class="form-control dropdown-toggle select-picker" data-size="8">
-                                                                <option selected="" value="">--</option>
-                                                                <option value="01">
-                                                                    January
-                                                                </option>
-                                                                <option value="02">
-                                                                    February
-                                                                </option>
-                                                                <option value="03">
-                                                                    March
-                                                                </option>
-                                                                <option value="04">
-                                                                    April
-                                                                </option>
-                                                                <option value="05">
-                                                                    May
-                                                                </option>
-                                                                <option value="06">
-                                                                    June
-                                                                </option>
-                                                                <option value="07">
-                                                                    July
-                                                                </option>
-                                                                <option value="08">
-                                                                    August
-                                                                </option>
-                                                                <option value="09">
-                                                                    September
-                                                                </option>
-                                                                <option value="10">
-                                                                    October
-                                                                </option>
-                                                                <option value="11">
-                                                                    November
-                                                                </option>
-                                                                <option value="12">
-                                                                    December
-                                                                </option>
-                                                            </select>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 col-md-6 d-none multi_date_div">
-                                                    <div class="form-group my-3">
-                                                        <label class="f-14 text-dark-grey mb-12" data-label="" for="multi_date">
-                                                            You can select multiple dates.
-
-                                                        </label>
-
-                                                        <input type="text" class="form-control height-35 f-14" placeholder="You can select multiple dates." value="19-09-2022" name="multi_date" id="multi_date" autocomplete="off">
-
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="row px-4">
-                                                <div class="col-lg-4 col-md-6 col-xl-3">
-                                                    <div class="bootstrap-timepicker timepicker">
-                                                        <div class="form-group my-3">
-                                                            <label class="f-14 text-dark-grey mb-12" data-label="true" for="start_time">
-                                                                Clock In
-                                                                <sup class="f-14 mr-1">*</sup>
-
-                                                            </label>
-
-                                                            <input type="text" name="CheckInTime" class="form-control height-35 f-14" placeholder="e.g. 10:00 AM" value="09:00 am" autocomplete="off">
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 col-md-6 col-xl-3">
-                                                    <div class="bootstrap-timepicker timepicker">
-                                                        <div class="form-group my-3">
-                                                            <label class="f-14 text-dark-grey mb-12" data-label="" for="end_time">
-                                                                Clock Out
-
-                                                            </label>
-
-                                                            <input type="text" name="CheckOutTime" class="form-control height-35 f-14" placeholder="e.g. 10:00 AM" value="06:00 pm" autocomplete="off">
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 col-md-6 col-xl-3">
-                                                    <div class="form-group my-3">
-                                                        <label class="f-14 text-dark-grey mb-12" data-label="" for="late_yes">
-                                                            Late
-
-                                                        </label>
-                                                        <div class="d-flex">
-                                                            <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
-                                                                <input type="radio" name="IsLate" value="yes" class="form-group cursor-pointer" autocomplete="off">
-                                                                <label class=" pb-2 cursor-pointer" for="late_yes">Yes</label>
-                                                            </div>
-                                                            <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
-                                                                <input type="radio" name="IsLate" value="no" class="form-group cursor-pointer" autocomplete="off">
-                                                                <label class=" pb-2 cursor-pointer" for="late_no">No</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 col-md-6 col-xl-3">
-                                                    <div class="form-group my-3">
-                                                        <label class="f-14 text-dark-grey mb-12" data-label="" for="half_day_yes">
-                                                            Half Day
-
-                                                        </label>
-
-                                                        <div class="d-flex">
-                                                            <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
-                                                                <input type="radio" name="IsHalfDay" value="yes" class="form-group cursor-pointer" autocomplete="off">
-                                                                <label class=" pb-2 cursor-pointer" for="half_day_yes">Yes</label>
-                                                            </div>
-                                                            <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
-                                                                <input type="radio" name="IsHalfDay" value="no" class="form-group cursor-pointer" autocomplete="off">
-                                                                <label class=" pb-2 cursor-pointer" for="half_day_no">No</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-
-                                            <div class="row px-4">
-                                                <div class="col-lg-3 col-md-3">
-                                                    <label class="f-14 text-dark-grey mb-12 mt-3" data-label="true" for="work_from_type">
-                                                        Working From
-                                                        <sup class="f-14 mr-1">*</sup>
-
-                                                    </label>
-                                                    <div class="form-group mb-0">
-
-                                                        <div class="dropdown">
-                                                            @*      <select name="year" asp-for="Year" id="year" data-live-search="true" class="form-control dropdown-toggle select-picker" data-size="8">
-                                                            <option value="">--</option>
-                                                            <option selected="" value="2022">2022</option>
-                                                            <option value="2021">2021</option>
-                                                            <option value="2020">2020</option>
-                                                            <option value="2019">2019</option>
-                                                            <option value="2018">2018</option>
-                                                            </select>*@
-
-                                                            <select name="WorkingFrom" id="WorkingFrom" data-live-search="true" class="form-control dropdown-toggle select-picker" data-size="8">
-                                                                <option value="">--</option>
-                                                                <option value="Office">Office</option>
-                                                                <option value="Home">Home</option>
-                                                                <option value="Other">Other</option>
-                                                            </select>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-3 col-md-6" id="other_place" style="display:none">
-                                                    <div class="form-group my-3">
-                                                        <label class="f-14 text-dark-grey mb-12" data-label="true" for="working_from">
-                                                            Other Locations
-                                                            <sup class="f-14 mr-1">*</sup>
-
-                                                        </label>
-
-                                                        <input type="text" class="form-control height-35 f-14" placeholder="" value="" name="working_from" id="working_from" autocomplete="off">
-
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-
-                                    <!-- Modal footer -->
-                                    <div class="modal-footer justify-content-start px-4">
-                                        <button type="button" class="btn btn-outline-danger"
-                                                data-bs-dismiss="modal">
-                                            Close
-                                        </button>
-                                        <button type="submit" class="btn btn-primary">Save</button>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
 
                     <div class="px-3">
                         <button type="button" class="btn btn-outline-secondary rounded f-14 p-2 mr-3 mb-2 mb-lg-0 bg-white"
@@ -645,208 +325,47 @@
                                         </td>
 
                                         @*     Tick/Cross     *@
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="2">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
 
-                                            <a href="javascript:;" class="view-attendance" data-bs-toggle="modal"
-                                           data-bs-target="#present-modal" data-attendance-id="1">
-                                                <svg class="svg-inline--fa fa-check fa-w-16 text-primary" aria-hidden="true"
+
+                                        @if (reportViewModel.AttendanceList.MarkAttendanceBY == "month")
+                                        {
+                                            @foreach (var item in ViewBag.data)
+                                            {
+                                                <td class="px-2">
+
+                                                    <a href="javascript:;" class="view-attendance" data-bs-toggle="modal" data-bs-target="#present-modal" data-attendance-id="@reportViewModel.AttendanceList.Id">
+                                                        <svg class="svg-inline--fa fa-check fa-w-16 text-primary" aria-hidden="true"
                                                  focusable="false" data-prefix="fa" data-icon="check" role="img"
                                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                                                  data-fa-i2svg="">
-                                                    <path fill="currentColor"
+                                                            <path fill="currentColor"
                                                       d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-check text-primary"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                            <div class="modal" id="present-modal">
-                                                <div class="modal-dialog modal-xl">
-                                                    <div class="modal-content">
+                                                            </path>
+                                                        </svg>
+                                                        <!-- <i class="fa fa-check text-primary"></i> Font Awesome fontawesome.com -->
+                                                    </a>
+                                                </td>
+                                            }
 
-                                                        <!-- Modal Header -->
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">Attendance Details</h5>
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal"></button>
-                                                        </div>
+                                        }
+                                        else
+                                        {
+                                            <td class="px-2">
+                                                <a href="javascript:;" class="edit-attendance" data-user-id="@reportViewModel.AttendanceList.Id"
+                                           data-attendance-date="2">
+                                                    <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
+                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
+                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
+                                                 data-fa-i2svg="">
+                                                        <path fill="currentColor"
+                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
+                                                        </path>
+                                                    </svg>
+                                                    <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
+                                                </a>
+                                            </td>
+                                        }
 
-                                                        <!-- Modal body -->
-                                                        <div class="modal-body bg-grey">
-                                                            <div class="row">
-                                                                <div class="col-md-12 mb-4">
-                                                                    <div class="card border-0 b-shadow-4">
-                                                                        <div class="card-horizontal align-items-center d-flex">
-                                                                            <div class="card-img">
-                                                                                <img class=""
-                                                                                 src="https://i.pravatar.cc/300?u=admin@example.com"
-                                                                                 alt="">
-                                                                            </div>
-                                                                            <div class="card-body border-0 pl-0">
-                                                                                <div class="row">
-                                                                                    <div class="col-12">
-                                                                                        <h5 class="card-title f-15 f-w-500 text-darkest-grey mb-0">
-                                                                                            <a href="#"
-                                                                                           class="text-darkest-grey">
-                                                                                                Dayton
-                                                                                                Morar
-                                                                                            </a>
-
-                                                                                        </h5>
-                                                                                        <p class="mb-0 f-13 text-dark-grey">
-                                                                                            Senior
-                                                                                        </p>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="card bg-white border-0 b-shadow-4">
-                                                                        <div class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
-                                                                            <h4 class="f-18 f-w-500 mb-0">Date - 01-09-2022</h4>
-
-
-
-                                                                        </div>
-
-                                                                        <div class="card-body ">
-                                                                            <div class="punch-status">
-                                                                                <div class="border rounded p-3 mb-3 bg-light">
-                                                                                    <h6 class="f-13">Clock In</h6>
-                                                                                    <p class="mb-0">02:30 pm</p>
-                                                                                </div>
-                                                                                <div class="punch-info">
-                                                                                    <div class="punch-hours f-13">
-                                                                                        <span>5 hrs </span>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="border rounded p-3 bg-light">
-                                                                                    <h6 class="f-13">Clock Out</h6>
-                                                                                    <p class="mb-0">
-                                                                                        07:30 pm
-                                                                                    </p>
-                                                                                </div>
-
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="card bg-white border-0 b-shadow-4">
-                                                                        <div class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
-                                                                            <h4 class="f-18 f-w-500 mb-0">Activity</h4>
-
-
-
-                                                                        </div>
-
-                                                                        <div class="card-body ">
-                                                                            <div class="recent-activity">
-
-
-                                                                                <div class="row res-activity-box" id="timelogBox51">
-                                                                                    <ul class="res-activity-list col-md-9">
-                                                                                        <li>
-                                                                                            <p class="mb-0">Clock In </p>
-                                                                                            <p class="res-activity-time">
-                                                                                                <svg class="svg-inline--fa fa-clock fa-w-16" aria-hidden="true" focusable="false"
-                                                                                                 data-prefix="fa" data-icon="clock" role="img" xmlns="http://www.w3.org/2000/svg"
-                                                                                                 viewBox="0 0 512 512" data-fa-i2svg="">
-                                                                                                    <path fill="currentColor"
-                                                                                                      d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm92.49,313h0l-20,25a16,16,0,0,1-22.49,2.5h0l-67-49.72a40,40,0,0,1-15-31.23V112a16,16,0,0,1,16-16h32a16,16,0,0,1,16,16V256l58,42.5A16,16,0,0,1,348.49,321Z">
-                                                                                                    </path>
-                                                                                                </svg><!-- <i class="fa fa-clock"></i> Font Awesome fontawesome.com -->
-                                                                                                01-09-2022 02:30 pm
-
-                                                                                            <svg class="svg-inline--fa fa-map-marker-alt fa-w-12 ml-2" aria-hidden="true"
-                                                                                                 focusable="false" data-prefix="fa" data-icon="map-marker-alt" role="img"
-                                                                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg="">
-                                                                                                    <path fill="currentColor"
-                                                                                                      d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z">
-                                                                                                    </path>
-                                                                                                </svg>
-                                                                                                <!-- <i class="fa fa-map-marker-alt ml-2"></i> Font Awesome fontawesome.com -->
-                                                                                                (office)
-
-
-
-                                                                                        </p>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <p class="mb-0">Clock Out</p>
-                                                                                            <p class="res-activity-time">
-                                                                                                <svg class="svg-inline--fa fa-clock fa-w-16" aria-hidden="true" focusable="false"
-                                                                                                 data-prefix="fa" data-icon="clock" role="img" xmlns="http://www.w3.org/2000/svg"
-                                                                                                 viewBox="0 0 512 512" data-fa-i2svg="">
-                                                                                                    <path fill="currentColor"
-                                                                                                      d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm92.49,313h0l-20,25a16,16,0,0,1-22.49,2.5h0l-67-49.72a40,40,0,0,1-15-31.23V112a16,16,0,0,1,16-16h32a16,16,0,0,1,16,16V256l58,42.5A16,16,0,0,1,348.49,321Z">
-                                                                                                    </path>
-                                                                                                </svg><!-- <i class="fa fa-clock"></i> Font Awesome fontawesome.com -->
-                                                                                                01-09-2022 07:30 pm
-                                                                                        </p>
-                                                                                        </li>
-                                                                                    </ul>
-
-                                                                                    <div class="col-md-3 text-right">
-                                                                                        <div class="dropdown dropend">
-                                                                                            <button type="button" class="btn" data-bs-toggle="dropdown">
-                                                                                                <svg class="svg-inline--fa fa-ellipsis-h fa-w-16" aria-hidden="true"
-                                                                                                 focusable="false" data-prefix="fa" data-icon="ellipsis-h" role="img"
-                                                                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
-                                                                                                    <path fill="currentColor"
-                                                                                                      d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z">
-                                                                                                    </path>
-                                                                                                </svg>
-                                                                                            </button>
-                                                                                            <ul class="dropdown-menu">
-                                                                                                <li>
-                                                                                                    <a class="dropdown-item d-block text-dark-grey f-13 py-3 px-3" href="javascript:;"
-                                                                                                   onclick="editAttendance(51)" data-attendance-id="51">Edit</a>
-                                                                                                </li>
-                                                                                                <li>
-                                                                                                    <a class="cursor-pointer dropdown-item d-block text-dark-grey f-13 pb-3 px-3"
-                                                                                                   onclick="deleteAttendance(51)" data-attendance-id="51"
-                                                                                                   href="javascript:;">Delete</a>
-                                                                                                </li>
-                                                                                            </ul>
-                                                                                        </div>
-
-
-                                                                                    </div>
-                                                                                </div>
-
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
 
                                         <td class="px-2">
                                             <a href="javascript:;" class="edit-attendance" data-user-id="1"
@@ -1117,6 +636,8 @@
                 </div>
             </div>
         </div>
+
+        @*Cross Modal*@
         <div class="modal" id="absent-modal">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -1650,6 +1171,507 @@
                 </div>
             </div>
         </div>
+        @*Cross Modal End*@
+
+        @*Tick Modal*@
+        <div class="modal" id="present-modal">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Attendance Details</h5>
+                        <button type="button" class="btn-close"
+                                data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body bg-grey">
+                        <div class="row">
+                            <div class="col-md-12 mb-4">
+                                <div class="card border-0 b-shadow-4">
+                                    <div class="card-horizontal align-items-center d-flex">
+                                        <div class="card-img">
+                                            <img class=""
+                                                 src="https://i.pravatar.cc/300?u=admin@example.com"
+                                                 alt="">
+                                        </div>
+                                        <div class="card-body border-0 pl-0">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h5 class="card-title f-15 f-w-500 text-darkest-grey mb-0">
+                                                        <a href="#"
+                                                           class="text-darkest-grey">
+                                                            Dayton
+                                                            Morar
+                                                        </a>
+
+                                                    </h5>
+                                                    <p class="mb-0 f-13 text-dark-grey">
+                                                        Senior
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card bg-white border-0 b-shadow-4">
+                                    <div class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
+                                        <h4 class="f-18 f-w-500 mb-0">Date - 01-09-2022</h4>
+
+
+
+                                    </div>
+
+                                    <div class="card-body ">
+                                        <div class="punch-status">
+                                            <div class="border rounded p-3 mb-3 bg-light">
+                                                <h6 class="f-13">Clock In</h6>
+                                                <p class="mb-0">02:30 pm</p>
+                                            </div>
+                                            <div class="punch-info">
+                                                <div class="punch-hours f-13">
+                                                    <span>5 hrs </span>
+                                                </div>
+                                            </div>
+                                            <div class="border rounded p-3 bg-light">
+                                                <h6 class="f-13">Clock Out</h6>
+                                                <p class="mb-0">
+                                                    07:30 pm
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-white border-0 b-shadow-4">
+                                    <div class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
+                                        <h4 class="f-18 f-w-500 mb-0">Activity</h4>
+
+
+
+                                    </div>
+
+                                    <div class="card-body ">
+                                        <div class="recent-activity">
+
+
+                                            <div class="row res-activity-box" id="timelogBox51">
+                                                <ul class="res-activity-list col-md-9">
+                                                    <li>
+                                                        <p class="mb-0">Clock In </p>
+                                                        <p class="res-activity-time">
+                                                            <svg class="svg-inline--fa fa-clock fa-w-16" aria-hidden="true" focusable="false"
+                                                                 data-prefix="fa" data-icon="clock" role="img" xmlns="http://www.w3.org/2000/svg"
+                                                                 viewBox="0 0 512 512" data-fa-i2svg="">
+                                                                <path fill="currentColor"
+                                                                      d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm92.49,313h0l-20,25a16,16,0,0,1-22.49,2.5h0l-67-49.72a40,40,0,0,1-15-31.23V112a16,16,0,0,1,16-16h32a16,16,0,0,1,16,16V256l58,42.5A16,16,0,0,1,348.49,321Z">
+                                                                </path>
+                                                            </svg><!-- <i class="fa fa-clock"></i> Font Awesome fontawesome.com -->
+                                                            01-09-2022 02:30 pm
+
+                                                            <svg class="svg-inline--fa fa-map-marker-alt fa-w-12 ml-2" aria-hidden="true"
+                                                                 focusable="false" data-prefix="fa" data-icon="map-marker-alt" role="img"
+                                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg="">
+                                                                <path fill="currentColor"
+                                                                      d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z">
+                                                                </path>
+                                                            </svg>
+                                                            <!-- <i class="fa fa-map-marker-alt ml-2"></i> Font Awesome fontawesome.com -->
+                                                            (office)
+
+
+
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <p class="mb-0">Clock Out</p>
+                                                        <p class="res-activity-time">
+                                                            <svg class="svg-inline--fa fa-clock fa-w-16" aria-hidden="true" focusable="false"
+                                                                 data-prefix="fa" data-icon="clock" role="img" xmlns="http://www.w3.org/2000/svg"
+                                                                 viewBox="0 0 512 512" data-fa-i2svg="">
+                                                                <path fill="currentColor"
+                                                                      d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm92.49,313h0l-20,25a16,16,0,0,1-22.49,2.5h0l-67-49.72a40,40,0,0,1-15-31.23V112a16,16,0,0,1,16-16h32a16,16,0,0,1,16,16V256l58,42.5A16,16,0,0,1,348.49,321Z">
+                                                                </path>
+                                                            </svg><!-- <i class="fa fa-clock"></i> Font Awesome fontawesome.com -->
+                                                            01-09-2022 07:30 pm
+                                                        </p>
+                                                    </li>
+                                                </ul>
+
+                                                <div class="col-md-3 text-right">
+                                                    <div class="dropdown dropend">
+                                                        <button type="button" class="btn" data-bs-toggle="dropdown">
+                                                            <svg class="svg-inline--fa fa-ellipsis-h fa-w-16" aria-hidden="true"
+                                                                 focusable="false" data-prefix="fa" data-icon="ellipsis-h" role="img"
+                                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                                                                <path fill="currentColor"
+                                                                      d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z">
+                                                                </path>
+                                                            </svg>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li>
+                                                                <a class="dropdown-item d-block text-dark-grey f-13 py-3 px-3" href="javascript:;"
+                                                                   onclick="editAttendance(51)" data-attendance-id="51">Edit</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="cursor-pointer dropdown-item d-block text-dark-grey f-13 pb-3 px-3"
+                                                                   onclick="deleteAttendance(51)" data-attendance-id="51"
+                                                                   href="javascript:;">Delete</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+        @*Tick Modal End*@
+
+        @*Mark Attendance Modal*@
+        <div class="modal" id="add-attendance">
+            <form id="MarkAttendance" method="post" asp-action="MarkAttendance" asp-controller="EmployeeAttendance" class="needs-validation" enctype="multipart/form-data" novalidate>
+
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="mb-0 p-20 f-21 font-weight-normal text-capitalize">
+                                Mark Attendance
+                            </h4>
+                            <button type="button" class="btn-close"
+                                    data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <div class="add-client bg-white rounded">
+
+
+                                <div class="row px-4">
+
+                                    <div class="col-lg-3 col-md-6">
+                                        <label class="f-14 text-dark-grey mb-12 mt-3" data-label="" for="department_id">
+                                            Department
+
+                                        </label>
+                                        <div class="form-group mb-0">
+                                            <div class="dropdown">
+                                                <select name="DepartmentID" id="DepartmentID" data-live-search="true" class="form-control dropdown-toggle" data-size="8">
+                                                    <option value="0">--</option>
+                                                    <option value="1">Marketing</option>
+                                                    <option value="2">Sales</option>
+                                                    <option value="3">Human Resources</option>
+                                                    <option value="4">Public Relations</option>
+                                                    <option value="5">Research</option>
+                                                    <option value="6">Finance</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-9">
+                                        <label class="f-14 text-dark-grey mb-12 mt-3" data-label="" for="department_id">
+                                            Employee
+
+                                        </label>
+                                        <div class="form-group mb-0">
+
+                                            <div class="dropdown">
+                                                <select id="EmployeeId" name="EmployeeId" multiple asp-items="ViewBag.EmployeeList" class="form-control dropdown-toggle">
+                                                    <option value="0">--</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row px-4 pb-4">
+
+                                    <div class="col-lg-3 col-md-6">
+                                        <label class="f-14 text-dark-grey mb-12 mt-3" data-label="" for="location">
+                                            Location
+
+                                        </label>
+                                        <div class="form-group mb-0">
+
+                                            <div class="dropdown">
+                                                <select name="location" id="location" data-live-search="true" class="form-control dropdown-toggle" data-size="8">
+                                                    <option selected="" value="1">
+                                                        Worksuite
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 col-md-6">
+                                        <div class="form-group my-3">
+                                            <label class="f-14 text-dark-grey mb-12" data-label="" for="mark_attendance_by_month">
+                                                Mark Attendance By
+
+                                            </label>
+                                            <div class="d-flex">
+                                                <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
+                                                    <input type="radio" name="MarkAttendanceBY" value="month" class="form-group cursor-pointer" checked="" autocomplete="off">
+                                                    <label class=" pb-2 cursor-pointer" for="mark_attendance_by_month">Month</label>
+                                                </div>
+                                                <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
+                                                    <input type="radio" name="MarkAttendanceBY" value="date" class="form-group cursor-pointer" autocomplete="off">
+                                                    <label class=" pb-2 cursor-pointer" for="mark_attendance_by_dates">Date</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 col-md-6 attendance_by_month">
+                                        <label class="f-14 text-dark-grey mb-12 mt-3" data-label="true" for="year">
+                                            Year
+                                            <sup class="f-14 mr-1">*</sup>
+
+                                        </label>
+                                        <div class="form-group mb-0">
+
+                                            <div class="dropdown">
+                                                <select name="Year" id="year" data-live-search="true" class="form-control dropdown-toggle select-picker" data-size="8">
+                                                    <option value="">--</option>
+                                                    <option selected="" value="2022">2022</option>
+                                                    <option value="2021">2021</option>
+                                                    <option value="2020">2020</option>
+                                                    <option value="2019">2019</option>
+                                                    <option value="2018">2018</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 col-md-6 attendance_by_month">
+                                        <label class="f-14 text-dark-grey mb-12 mt-3" data-label="true" for="month">
+                                            Month
+                                            <sup class="f-14 mr-1">*</sup>
+
+                                        </label>
+                                        <div class="form-group mb-0">
+
+                                            <div class="dropdown">
+                                                <select name="Month" id="month" data-live-search="true" class="form-control dropdown-toggle select-picker" data-size="8">
+                                                    <option selected="" value="">--</option>
+                                                    <option value="01">
+                                                        January
+                                                    </option>
+                                                    <option value="02">
+                                                        February
+                                                    </option>
+                                                    <option value="03">
+                                                        March
+                                                    </option>
+                                                    <option value="04">
+                                                        April
+                                                    </option>
+                                                    <option value="05">
+                                                        May
+                                                    </option>
+                                                    <option value="06">
+                                                        June
+                                                    </option>
+                                                    <option value="07">
+                                                        July
+                                                    </option>
+                                                    <option value="08">
+                                                        August
+                                                    </option>
+                                                    <option value="09">
+                                                        September
+                                                    </option>
+                                                    <option value="10">
+                                                        October
+                                                    </option>
+                                                    <option value="11">
+                                                        November
+                                                    </option>
+                                                    <option value="12">
+                                                        December
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6 d-none multi_date_div">
+                                        <div class="form-group my-3">
+                                            <label class="f-14 text-dark-grey mb-12" data-label="" for="multi_date">
+                                                You can select multiple dates.
+
+                                            </label>
+
+                                            <input type="text" class="form-control height-35 f-14" placeholder="You can select multiple dates." value="19-09-2022" name="multi_date" id="multi_date" autocomplete="off">
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row px-4">
+                                    <div class="col-lg-4 col-md-6 col-xl-3">
+                                        <div class="bootstrap-timepicker timepicker">
+                                            <div class="form-group my-3">
+                                                <label class="f-14 text-dark-grey mb-12" data-label="true" for="start_time">
+                                                    Clock In
+                                                    <sup class="f-14 mr-1">*</sup>
+
+                                                </label>
+
+                                                <input type="text" name="CheckInTime" class="form-control height-35 f-14" placeholder="e.g. 10:00 AM" value="09:00 am" autocomplete="off">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6 col-xl-3">
+                                        <div class="bootstrap-timepicker timepicker">
+                                            <div class="form-group my-3">
+                                                <label class="f-14 text-dark-grey mb-12" data-label="" for="end_time">
+                                                    Clock Out
+
+                                                </label>
+
+                                                <input type="text" name="CheckOutTime" class="form-control height-35 f-14" placeholder="e.g. 10:00 AM" value="06:00 pm" autocomplete="off">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6 col-xl-3">
+                                        <div class="form-group my-3">
+                                            <label class="f-14 text-dark-grey mb-12" data-label="" for="late_yes">
+                                                Late
+
+                                            </label>
+                                            <div class="d-flex">
+                                                <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
+                                                    <input type="radio" name="IsLate" value="yes" class="form-group cursor-pointer" autocomplete="off">
+                                                    <label class=" pb-2 cursor-pointer" for="late_yes">Yes</label>
+                                                </div>
+                                                <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
+                                                    <input type="radio" name="IsLate" value="no" class="form-group cursor-pointer" autocomplete="off">
+                                                    <label class=" pb-2 cursor-pointer" for="late_no">No</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4 col-md-6 col-xl-3">
+                                        <div class="form-group my-3">
+                                            <label class="f-14 text-dark-grey mb-12" data-label="" for="half_day_yes">
+                                                Half Day
+
+                                            </label>
+
+                                            <div class="d-flex">
+                                                <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
+                                                    <input type="radio" name="IsHalfDay" value="yes" class="form-group cursor-pointer" autocomplete="off">
+                                                    <label class=" pb-2 cursor-pointer" for="half_day_yes">Yes</label>
+                                                </div>
+                                                <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
+                                                    <input type="radio" name="IsHalfDay" value="no" class="form-group cursor-pointer" autocomplete="off">
+                                                    <label class=" pb-2 cursor-pointer" for="half_day_no">No</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row px-4">
+                                    <div class="col-lg-3 col-md-3">
+                                        <label class="f-14 text-dark-grey mb-12 mt-3" data-label="true" for="work_from_type">
+                                            Working From
+                                            <sup class="f-14 mr-1">*</sup>
+
+                                        </label>
+                                        <div class="form-group mb-0">
+
+                                            <div class="dropdown">
+                                                @*      <select name="year" asp-for="Year" id="year" data-live-search="true" class="form-control dropdown-toggle select-picker" data-size="8">
+                                                <option value="">--</option>
+                                                <option selected="" value="2022">2022</option>
+                                                <option value="2021">2021</option>
+                                                <option value="2020">2020</option>
+                                                <option value="2019">2019</option>
+                                                <option value="2018">2018</option>
+                                                </select>*@
+
+                                                <select name="WorkingFrom" id="WorkingFrom" data-live-search="true" class="form-control dropdown-toggle select-picker" data-size="8">
+                                                    <option value="">--</option>
+                                                    <option value="Office">Office</option>
+                                                    <option value="Home">Home</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3 col-md-6" id="other_place" style="display:none">
+                                        <div class="form-group my-3">
+                                            <label class="f-14 text-dark-grey mb-12" data-label="true" for="working_from">
+                                                Other Locations
+                                                <sup class="f-14 mr-1">*</sup>
+
+                                            </label>
+
+                                            <input type="text" class="form-control height-35 f-14" placeholder="" value="" name="working_from" id="working_from" autocomplete="off">
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer justify-content-start px-4">
+                            <button type="button" class="btn btn-outline-danger"
+                                    data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        @*Mark Attendance Modal End*@
     </div>
 
     <form asp-action="Index" method="get">
