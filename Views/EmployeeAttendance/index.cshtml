@@ -12,6 +12,7 @@
     ViewBag.pageTitle = "Attendance";
     Layout = "~/Views/_Shared/_Layout.cshtml";
     int count = 1;
+    
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -281,6 +282,7 @@
                             <tbody>
                                 @foreach (var reportViewModel in Model)
                                 {
+                                    int IsAttendance = 1;
                                     <tr>
                                         <td class="px-2">
 
@@ -329,22 +331,45 @@
 
                                         @if (reportViewModel.AttendanceList.MarkAttendanceBY == "month")
                                         {
-                                            @foreach (var item in ViewBag.data)
-                                            {
-                                                <td class="px-2">
+                                            string MonthCur = "";
+                                            string MonthCur2 = "";
 
-                                                    <a href="javascript:;" class="view-attendance" data-bs-toggle="modal" data-bs-target="#present-modal" data-attendance-id="@reportViewModel.AttendanceList.Id">
-                                                        <svg class="svg-inline--fa fa-check fa-w-16 text-primary" aria-hidden="true"
+                                            @for (int i = 1; i < ViewBag.data.Count; i++)
+                                            {
+                                                if (IsAttendance == 1)
+                                                {
+
+
+                                                    <td class="px-2">
+
+                                                        <a href="javascript:;" class="view-attendance" data-bs-toggle="modal" data-bs-target="#present-modal" data-attendance-id="@reportViewModel.AttendanceList.Id">
+                                                            <svg class="svg-inline--fa fa-check fa-w-16 text-primary" aria-hidden="true"
                                                  focusable="false" data-prefix="fa" data-icon="check" role="img"
                                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                                                  data-fa-i2svg="">
-                                                            <path fill="currentColor"
+                                                                <path fill="currentColor"
                                                       d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
-                                                            </path>
-                                                        </svg>
-                                                        <!-- <i class="fa fa-check text-primary"></i> Font Awesome fontawesome.com -->
-                                                    </a>
-                                                </td>
+                                                                </path>
+                                                            </svg>
+                                                            <!-- <i class="fa fa-check text-primary"></i> Font Awesome fontawesome.com -->
+                                                        </a>
+                                                    </td>
+                                                }
+                                                else if (IsAttendance == 0)
+                                                {
+                                                    <td class="px-2">
+
+                                                        -
+                                                    </td>
+                                                }
+                                                MonthCur = Convert.ToString(i);
+                                                MonthCur2 = "0" + MonthCur;
+                                                @if ((MonthCur == DateTime.Now.ToString("dd") || MonthCur2 == DateTime.Now.ToString("dd")) && reportViewModel.AttendanceList.Month == DateTime.Now.ToString("MM") && reportViewModel.AttendanceList.Year == DateTime.Now.ToString("yyyy"))
+                                                {
+                                                    IsAttendance = 0;
+
+                                                }
+
                                             }
 
                                         }
@@ -365,269 +390,10 @@
                                                 </a>
                                             </td>
                                         }
-
-
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="4">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="5">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="6">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="7">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="8">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="9">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="10">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="11">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="12">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="13">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="14">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="15">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="16">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="17">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-                                            <a href="javascript:;" class="edit-attendance" data-user-id="1"
-                                           data-attendance-date="18">
-                                                <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                 focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                 data-fa-i2svg="">
-                                                    <path fill="currentColor"
-                                                      d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
-                                                    </path>
-                                                </svg>
-                                                <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
-                                            </a>
-                                        </td>
-                                        <td class="px-2">
-
-                                            -
-                                        </td>
-                                        <td class="px-2">
-
-                                            -
-                                        </td>
-                                        <td class="px-2">
-
-                                            -
-                                        </td>
-                                        <td class="px-2">
-
-                                            -
-                                        </td>
-                                        <td class="px-2">
-
-                                            -
-                                        </td>
-                                        <td class="px-2">
-
-                                            -
-                                        </td>
-                                        <td class="px-2">
-
-                                            -
-                                        </td>
-                                        <td class="px-2">
-
-                                            -
-                                        </td>
-                                        <td class="px-2">
-
-                                            -
-                                        </td>
-                                        <td class="px-2">
-
-                                            -
-                                        </td>
-                                        <td class="px-2">
-
-                                            -
-                                        </td>
-                                        <td class="px-2">
-
-                                            -
-                                        </td>
                                         <td class="text-dark f-w-500 text-right attendance-total px-2 w-100">
                                             1 / <span class="text-lightest">30</span>
                                         </td>
+
                                     </tr>
                                 }
                             </tbody>

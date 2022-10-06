@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace HRMS.Employees
@@ -19,6 +20,7 @@ namespace HRMS.Employees
         //private EmployeeDBContext Context { get; }
         private ApplicationDBContext Context { get; }
         public List<string> AllDaysOfWeekList = new List<string>();
+        
 
 
 
@@ -31,6 +33,9 @@ namespace HRMS.Employees
 
         public IActionResult Index(string SelectedMonth, string SelectedYear)
         {
+            var cId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Customer c = Context.Customer.FirstOrDefault(u => u.UserId == cId);
+
             int mon, year, noOfDays = 0;
 
             if (SelectedMonth == null || SelectedYear == null)
@@ -51,6 +56,20 @@ namespace HRMS.Employees
             noOfDays = TotalNumberOfDaysInMonth(year, mon);
             AllDaysOfWeekList = GetDaysOfWeek(year, mon, noOfDays);
             ViewBag.data= AllDaysOfWeekList;
+
+            //var results = (from a in Context.Attendance
+            //               join b in Context.Assignment on a.AssignmentId equals b.Id
+            //               join s in Context.Shift on b.ShiftId equals s.Id
+            //               join cb in Context.CustomerBranch on s.BranchId equals cb.BranchId
+            //               join e in Context.Employee on a.EmployeeId equals e.Id
+            //               where cb.CustomerId == c.Id
+            //                 && a.CheckOutTime.Value.Month == mon
+            //                 && a.CheckInTime.Value.Year == year
+            //               select new CustomerAttendanceReportViewModel()
+            //               {
+            //                   Emp_name = e.FirstName + ' ' + e.LastName,
+            //                   empAttendances = Context.Attendance.Where(a => a.EmployeeId == e.Id).ToList()
+            //               }).ToList();
 
             var employeesAttendances = (from pd in Context.Attendance
                                          join od in Context.Employee on pd.EmployeeId equals od.Id

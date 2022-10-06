@@ -30,7 +30,7 @@ namespace HRMS.Customers
 
             //Get current month number, you can pass this value to controller ActionMethod also
             //int Month = DateTime.Now.Month;
-            int Month = 1;
+            int Month = 10;
 
             //int Year = DateTime.Now.Year;
             int Year = 2022;
@@ -78,7 +78,19 @@ namespace HRMS.Customers
             //               {Emp_name = a.Employee_name
 
             //                }).ToList();
-
+            var results2 = (from a in db.Attendance
+                           join b in db.Assignment on a.AssignmentId equals b.Id
+                           join s in db.Shift on b.ShiftId equals s.Id
+                           join cb in db.CustomerBranch on s.BranchId equals cb.BranchId
+                           join e in db.Employee on a.EmployeeId equals e.Id
+                           where cb.CustomerId == c.Id
+                             && a.CheckInTime.Value.Month == Month
+                             && a.CheckInTime.Value.Year == Year
+                            select new CustomerAttendanceReportViewModel()
+                           {
+                               Emp_name = e.FirstName + ' ' + e.LastName,
+                               empAttendances = db.Attendance.Where(a => a.EmployeeId == e.Id).ToList()
+                           }).ToList();
 
             var results = (from a in db.Attendance
                            join b in db.Assignment on a.AssignmentId equals b.Id
