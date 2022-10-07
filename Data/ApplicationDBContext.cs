@@ -352,6 +352,7 @@ namespace HRMS.Data
                 b.ToTable("AspUserRoles");
             });
 
+
         }
 
     }

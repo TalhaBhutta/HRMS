@@ -33,8 +33,8 @@ namespace HRMS.Employees
 
         public IActionResult Index(string SelectedMonth, string SelectedYear)
         {
-            var cId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Customer c = Context.Customer.FirstOrDefault(u => u.UserId == cId);
+            //var cId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //Customer c = Context.Customer.FirstOrDefault(u => u.UserId == cId);
 
             int mon, year, noOfDays = 0;
 
@@ -71,8 +71,10 @@ namespace HRMS.Employees
             //                   empAttendances = Context.Attendance.Where(a => a.EmployeeId == e.Id).ToList()
             //               }).ToList();
 
+
+
             var employeesAttendances = (from pd in Context.Attendance
-                                         join od in Context.Employee on pd.EmployeeId equals od.Id
+                                        join od in Context.Employee on pd.EmployeeId equals od.Id
                                         where pd.Month == SelectedMonth
                              && pd.CheckInTime.Value.Year == year
                                         select new EmployeesAttendanceReportViewModel
@@ -90,10 +92,152 @@ namespace HRMS.Employees
         [HttpPost]
         public IActionResult MarkAttendance(Attendance attendance)
         {
-            attendance.CreatedOn = DateTime.Now;
-            this.Context.Attendance.Add(attendance);
-            this.Context.SaveChanges();
-            return RedirectToAction("Index");
+           
+            if(attendance.MarkAttendanceBY == "date")
+            {
+                string[] values = attendance.multi_date.Split(',');
+                var attendanceList = new List<Attendance>();
+                for (int i = 0; i < values.Length; i++)
+                {
+                    attendanceList.Add(new Attendance
+                    {
+                        Id = attendance.Id,
+                        EmployeeId = attendance.EmployeeId,
+                        DepartmentID = attendance.DepartmentID,
+                        MarkAttendanceBY = attendance.MarkAttendanceBY,
+                        Year = attendance.Year,
+                        Month = attendance.Month,
+                        IsLate = attendance.IsLate,
+                        IsHalfDay = attendance.IsHalfDay,
+                        CheckInTime = attendance.CheckInTime,
+                        CheckOutTime = attendance.CheckOutTime,
+                        AssignmentId = attendance.AssignmentId,
+                        TimesheetId = attendance.TimesheetId,
+                        ManualCheckInLat = attendance.ManualCheckInLat,
+                        ManualCheckInLong = attendance.ManualCheckInLong,
+                        ManualCheckOutLat = attendance.ManualCheckOutLat,
+                        ManualCheckOutLong = attendance.ManualCheckOutLong,
+                        ManualOutOfRangeCheckIn = attendance.ManualOutOfRangeCheckIn,
+                        ManualOutOfRangeCheckOut = attendance.ManualOutOfRangeCheckOut,
+                        CheckInLat = attendance.CheckInLat,
+                        CheckInLong = attendance.CheckInLong,
+                        CheckOutLat = attendance.CheckOutLat,
+                        CheckOutLong = attendance.CheckOutLong,
+                        OutOfRangeCheckIn = attendance.OutOfRangeCheckIn,
+                        OutOfRangeCheckOut = attendance.OutOfRangeCheckOut,
+                        NoShow = attendance.NoShow,
+                        InvoiceId = attendance.InvoiceId,
+                        CreatedOn = DateTime.Now,
+                        CreatedBy = attendance.CreatedBy,
+                        ModifiedOn = attendance.ModifiedOn,
+                        ModifiedBy = attendance.ModifiedBy,
+                        WorkingFrom = attendance.WorkingFrom,
+                        multi_date = values[i].Trim()
+                        
+                    }); //here you create your entity and add it to List
+
+
+                    //values[i] = values[i].Trim();
+                    //attendance.CreatedOn = DateTime.Now;
+                    //attendance.multi_date = values[i].Trim();
+                    //attendanceList.Add(attendance);
+                    //Context.Attendance.Add(attendance);
+
+                    ////Context.SaveChanges();
+                    //Context.SaveChanges();
+
+                }
+                this.Context.Attendance.AddRange(attendanceList); //here you add all new entities to context
+                this.Context.SaveChanges();
+            }
+            else if (attendance.MarkAttendanceBY == "month")
+            {
+                int mon, year, noOfDays = 0;
+
+                string SelectedMonth = attendance.Month;
+                string SelectedYear = attendance.Year;
+
+                if (SelectedMonth == null || SelectedYear == null)
+                {
+                    SelectedMonth = DateTime.Now.ToString("MM");
+                    SelectedYear = DateTime.Now.ToString("yyyy");
+                }
+
+
+
+                mon = int.Parse(SelectedMonth);
+               
+
+                year = int.Parse(SelectedYear);
+
+                noOfDays = TotalNumberOfDaysInMonth(year, mon);
+
+                var attendanceList = new List<Attendance>();
+                for (int i = 0; i < noOfDays; i++)
+                {
+                    DateTimeOffset dateTime = DateTimeOffset.Now;
+                    dateTime = new DateTimeOffset(int.Parse(attendance.Year), mon, i, attendance.CheckInTime.Value.Hour, attendance.CheckInTime.Value.Minute, attendance.CheckInTime.Value.Second,
+                                         new TimeSpan(1, 0, 0));
+                    
+                    attendanceList.Add(new Attendance
+                    {
+                        Id = attendance.Id,
+                        EmployeeId = attendance.EmployeeId,
+                        DepartmentID = attendance.DepartmentID,
+                        MarkAttendanceBY = attendance.MarkAttendanceBY,
+                        Year = attendance.Year,
+                        Month = attendance.Month,
+                        IsLate = attendance.IsLate,
+                        IsHalfDay = attendance.IsHalfDay,
+                        CheckInTime = attendance.CheckInTime,
+                        CheckOutTime = attendance.CheckOutTime,
+                        AssignmentId = attendance.AssignmentId,
+                        TimesheetId = attendance.TimesheetId,
+                        ManualCheckInLat = attendance.ManualCheckInLat,
+                        ManualCheckInLong = attendance.ManualCheckInLong,
+                        ManualCheckOutLat = attendance.ManualCheckOutLat,
+                        ManualCheckOutLong = attendance.ManualCheckOutLong,
+                        ManualOutOfRangeCheckIn = attendance.ManualOutOfRangeCheckIn,
+                        ManualOutOfRangeCheckOut = attendance.ManualOutOfRangeCheckOut,
+                        CheckInLat = attendance.CheckInLat,
+                        CheckInLong = attendance.CheckInLong,
+                        CheckOutLat = attendance.CheckOutLat,
+                        CheckOutLong = attendance.CheckOutLong,
+                        OutOfRangeCheckIn = attendance.OutOfRangeCheckIn,
+                        OutOfRangeCheckOut = attendance.OutOfRangeCheckOut,
+                        NoShow = attendance.NoShow,
+                        InvoiceId = attendance.InvoiceId,
+                        CreatedOn = DateTime.Now,
+                        CreatedBy = attendance.CreatedBy,
+                        ModifiedOn = attendance.ModifiedOn,
+                        ModifiedBy = attendance.ModifiedBy,
+                        WorkingFrom = attendance.WorkingFrom,
+                        multi_date =attendance.multi_date,
+                        Day = dateTime
+                    }); //here you create your entity and add it to List
+
+
+                    //values[i] = values[i].Trim();
+                    //attendance.CreatedOn = DateTime.Now;
+                    //attendance.multi_date = values[i].Trim();
+                    //attendanceList.Add(attendance);
+                    //Context.Attendance.Add(attendance);
+
+                    ////Context.SaveChanges();
+                    //Context.SaveChanges();
+
+                }
+                this.Context.Attendance.AddRange(attendanceList); //here you add all new entities to context
+                this.Context.SaveChanges();
+
+            }
+                //this.Context.Attendance.AddRange(attendanceList);
+                //this.Context.SaveChanges();
+
+                //this.Context.SaveChanges();
+
+
+                return RedirectToAction("Index");
         }
 
         public int TotalNumberOfDaysInMonth(int year, int month)

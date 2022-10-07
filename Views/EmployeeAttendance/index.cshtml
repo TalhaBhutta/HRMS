@@ -12,7 +12,7 @@
     ViewBag.pageTitle = "Attendance";
     Layout = "~/Views/_Shared/_Layout.cshtml";
     int count = 1;
-    
+
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -1203,104 +1203,103 @@
                                             </label>
                                             <div class="d-flex">
                                                 <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
-                                                    <input type="radio" name="MarkAttendanceBY" value="month" class="form-group cursor-pointer" checked="" autocomplete="off">
+                                                    <input type="radio" onchange="DateType()" name="MarkAttendanceBY" value="month" class="form-group cursor-pointer" checked="" autocomplete="off">
                                                     <label class=" pb-2 cursor-pointer" for="mark_attendance_by_month">Month</label>
                                                 </div>
                                                 <div class="form-check-inline custom-control custom-radio mt-2 mr-3">
-                                                    <input type="radio" name="MarkAttendanceBY" value="date" class="form-group cursor-pointer" autocomplete="off">
+                                                    <input type="radio" onchange="DateType()" name="MarkAttendanceBY" value="date" class="form-group cursor-pointer" autocomplete="off">
                                                     <label class=" pb-2 cursor-pointer" for="mark_attendance_by_dates">Date</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-lg-3 col-md-6 attendance_by_month">
-                                        <label class="f-14 text-dark-grey mb-12 mt-3" data-label="true" for="year">
-                                            Year
-                                            <sup class="f-14 mr-1">*</sup>
-
-                                        </label>
-                                        <div class="form-group mb-0">
-
-                                            <div class="dropdown">
-                                                <select name="Year" id="year" data-live-search="true" class="form-control dropdown-toggle select-picker" data-size="8">
-                                                    <option value="">--</option>
-                                                    <option selected="" value="2022">2022</option>
-                                                    <option value="2021">2021</option>
-                                                    <option value="2020">2020</option>
-                                                    <option value="2019">2019</option>
-                                                    <option value="2018">2018</option>
-                                                </select>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3 col-md-6 attendance_by_month">
-                                        <label class="f-14 text-dark-grey mb-12 mt-3" data-label="true" for="month">
-                                            Month
-                                            <sup class="f-14 mr-1">*</sup>
-
-                                        </label>
-                                        <div class="form-group mb-0">
-
-                                            <div class="dropdown">
-                                                <select name="Month" id="month" data-live-search="true" class="form-control dropdown-toggle select-picker" data-size="8">
-                                                    <option selected="" value="">--</option>
-                                                    <option value="01">
-                                                        January
-                                                    </option>
-                                                    <option value="02">
-                                                        February
-                                                    </option>
-                                                    <option value="03">
-                                                        March
-                                                    </option>
-                                                    <option value="04">
-                                                        April
-                                                    </option>
-                                                    <option value="05">
-                                                        May
-                                                    </option>
-                                                    <option value="06">
-                                                        June
-                                                    </option>
-                                                    <option value="07">
-                                                        July
-                                                    </option>
-                                                    <option value="08">
-                                                        August
-                                                    </option>
-                                                    <option value="09">
-                                                        September
-                                                    </option>
-                                                    <option value="10">
-                                                        October
-                                                    </option>
-                                                    <option value="11">
-                                                        November
-                                                    </option>
-                                                    <option value="12">
-                                                        December
-                                                    </option>
-                                                </select>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-4 col-md-6 d-none multi_date_div">
-                                        <div class="form-group my-3">
-                                            <label class="f-14 text-dark-grey mb-12" data-label="" for="multi_date">
-                                                You can select multiple dates.
+                                        <div class="col-lg-3 col-md-6 attendance_by_month">
+                                            <label class="f-14 text-dark-grey mb-12 mt-3" data-label="true" for="year">
+                                                Year
+                                                <sup class="f-14 mr-1">*</sup>
 
                                             </label>
+                                            <div class="form-group mb-0">
 
-                                            <input type="text" class="form-control height-35 f-14" placeholder="You can select multiple dates." value="19-09-2022" name="multi_date" id="multi_date" autocomplete="off">
+                                                <div class="dropdown">
+                                                    <select name="Year" id="year" data-live-search="true" class="form-control dropdown-toggle select-picker" data-size="8">
+                                                        <option value="">--</option>
+                                                        <option selected="" value="2022">2022</option>
+                                                        <option value="2021">2021</option>
+                                                        <option value="2020">2020</option>
+                                                        <option value="2019">2019</option>
+                                                        <option value="2018">2018</option>
+                                                    </select>
+                                                </div>
 
+                                            </div>
                                         </div>
-                                    </div>
 
+                                        <div class="col-lg-3 col-md-6 attendance_by_month">
+                                            <label class="f-14 text-dark-grey mb-12 mt-3" data-label="true" for="month">
+                                                Month
+                                                <sup class="f-14 mr-1">*</sup>
+
+                                            </label>
+                                            <div class="form-group mb-0">
+
+                                                <div class="dropdown">
+                                                    <select name="Month" id="month" data-live-search="true" class="form-control dropdown-toggle select-picker" data-size="8">
+                                                        <option selected="" value="">--</option>
+                                                        <option value="01">
+                                                            January
+                                                        </option>
+                                                        <option value="02">
+                                                            February
+                                                        </option>
+                                                        <option value="03">
+                                                            March
+                                                        </option>
+                                                        <option value="04">
+                                                            April
+                                                        </option>
+                                                        <option value="05">
+                                                            May
+                                                        </option>
+                                                        <option value="06">
+                                                            June
+                                                        </option>
+                                                        <option value="07">
+                                                            July
+                                                        </option>
+                                                        <option value="08">
+                                                            August
+                                                        </option>
+                                                        <option value="09">
+                                                            September
+                                                        </option>
+                                                        <option value="10">
+                                                            October
+                                                        </option>
+                                                        <option value="11">
+                                                            November
+                                                        </option>
+                                                        <option value="12">
+                                                            December
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6 multi_date_div">
+                                            <div class="form-group my-3">
+
+
+                                                <label class="f-14 text-dark-grey mb-12" data-label="" for="multi_date">
+                                                    You can select multiple dates.
+
+                                                </label>
+                                                @*<input type="text" class="form-control date" />*@
+                                                <input type="text" class="form-control height-35 f-14 date" placeholder="You can select multiple dates." name="multi_date" id="multi_date" autocomplete="off">
+
+                                            </div>
+                                        </div>
                                 </div>
                                 <div class="row px-4">
                                     <div class="col-lg-4 col-md-6 col-xl-3">
@@ -1312,7 +1311,7 @@
 
                                                 </label>
 
-                                                <input type="text" name="CheckInTime" class="form-control height-35 f-14" placeholder="e.g. 10:00 AM" value="09:00 am" autocomplete="off">
+                                                <input type="time" name="CheckInTime" class="form-control height-35 f-14" placeholder="e.g. 10:00 AM" value="09:00 am" autocomplete="off">
 
                                             </div>
                                         </div>
@@ -1326,7 +1325,7 @@
 
                                                 </label>
 
-                                                <input type="text" name="CheckOutTime" class="form-control height-35 f-14" placeholder="e.g. 10:00 AM" value="06:00 pm" autocomplete="off">
+                                                <input type="time" name="CheckOutTime" class="form-control height-35 f-14" placeholder="e.g. 10:00 AM" value="06:00 pm" autocomplete="off">
 
                                             </div>
                                         </div>
@@ -1465,17 +1464,50 @@
 
             });
 
+             $(".multi_date_div").hide();
+
             $(function() {
                 $('#EmployeeId').multiselect({
                     includeSelectAllOption: true
                 });
             });
 
+            $('#multi_date').datepicker({
+                multidate: true,
+                format: 'dd-MM-yyyy'
+            });
+
+            $('.date').datepicker({
+                multidate: true
+            });
+
+            //$('.date').datepicker('setDates', [new Date(2014, 2, 5), new Date(2014, 3, 5)])
+
+            $('#multi_date').datepicker({
+                multidate: true
+            });
+
+
         });
 
 
 
+        function DateType() {
+            var rbValue = $('input[name="MarkAttendanceBY"]:checked').val();
+            if (rbValue == "date") {
+                $(".attendance_by_month").hide();
+                $(".multi_date_div").show();
+            }
+            else if (rbValue == "month") {
+                $(".attendance_by_month").show();
+                $(".multi_date_div").hide();
+            }
 
+        }
 
     </script>
 }
+
+    <style>
+        .datepicker{ z-index:99999 !important; }
+    </style>
