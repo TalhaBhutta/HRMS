@@ -1,6 +1,6 @@
 ﻿@using HRMS.Enums
 
-@model IEnumerable<HRMS.ViewModels.CustomerAttendanceReportViewModel>
+@model IList<HRMS.ViewModels.CustomerAttendanceReportViewModel>
 
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,7 +13,24 @@
     Layout = "~/Views/_Shared/_Layout.cshtml";
     int count = 1;
     int empCount = 0;
+    int prevEmployeeId = 0;
+    string sMonth="0";
+    int sYear = 0;
+    int sEmpID = 0;
+    try
+    {
+         sMonth = Model[0].Selectedmonth;
+         sYear = Model[0].Selectedyear;
+         sEmpID = Model[0].Selectedemp;
+    }
+    catch(Exception ex)
+    {
+         sMonth = "0";
+         sYear = 0;
+         sEmpID = 0;
+    }
 
+    
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -27,27 +44,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
-<body>
+<body onload="setFilter()">
     @*--------Filter Part----------*@
     <div class="border border-bottom-0 border-start-0 border-end-0 d bg-white">
+        <input type="hidden" id="sMon" value="@sMonth" />
+        <input type="hidden" id="sYear" value="@sYear" />
+        <input type="hidden" id="sEmpID" value="@sEmpID" />
         <form action="" id="filter-form">
             <div class="d-lg-flex d-md-flex d-block flex-wrap filter-box">
                 <div class="select-box d-flex py-2 pr-2 border-right-grey border-right-grey-sm-0">
                     <p class="mb-0 pr-3 f-14 text-dark-grey d-flex align-items-center">Employee</p>
                     <div class="select-status">
                         <div class="dropdown">
-                            <select class="dropdown-toggle form-control" data-bs-toggle="dropdown">
-                                <option class="fw-bold">All</option>
-                                <option>Anjali Mitchell</option>
-                                <option>Deja White</option>
-                                <option>Dr. Darrion Graham</option>
-                                <option>Kristoffer Kilback</option>
-                                <option>Krystel Gutkowski</option>
-                                <option>Luis Wilkinson</option>
-                                <option>Mr. Jaylin Schiller Jr.</option>
-                                <option>Mrs. Arielle Hilpert</option>
-                                <option>Prof. Ellis Ritchie</option>
-                                <option>Verna Fahey</option>
+                            <select class="dropdown-toggle form-control" name="employee" id="filterEmployee" asp-items="ViewBag.EmployeeList" data-bs-toggle="dropdown">
+                                <option value="0">All</option>
                             </select>
 
                         </div>
@@ -78,7 +88,7 @@
                         <div class="dropdown">
                             <select class="form-control dropdown-toggle" name="month" id="filterMonth" data-live-search="true"
                                     data-size="8" tabindex="null">
-                                <option selected="" value="01">
+                                <option value="01">
                                     January
                                 </option>
                                 <option value="02">
@@ -283,30 +293,39 @@
                                 @foreach (var reportViewModel in Model)
                                 {
                                     int IsAttendance = 1;
-                                    int  totalAttendance=0;
-                                    empCount = 0;
-                                    <tr>
-                                        <td class="px-2">
+                                    int totalAttendance = 0;
 
-                                            <div class="media align-items-center d-flex">
-                                                <a href="#"
+
+
+                                    empCount = 0;
+                                    if (reportViewModel.empAttendances[empCount].EmployeeId == prevEmployeeId)
+                                    {
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td class="px-2">
+
+                                                <div class="media align-items-center d-flex">
+                                                    <a href="#"
                                                class="position-relative px-2">
-                                                    <img src="https://i.pravatar.cc/300?u=admin@example.com"
+                                                        <img src="https://i.pravatar.cc/300?u=admin@example.com"
                                                      class="mr-2 taskEmployeeImg rounded-circle" alt="Brendon Wehner"
                                                      title="@reportViewModel.Emp_name">
-                                                </a>
-                                                <div class="media-body">
-                                                    <h5 class="mb-0 f-12">
-                                                        <a href="#"
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <h5 class="mb-0 f-12">
+                                                            <a href="#"
                                                        class="text-darkest-grey">@reportViewModel.Emp_name</a>
-                                                    </h5>
-                                                    <p class="mb-0 f-12 text-dark-grey">
-                                                        Trainee
-                                                    </p>
+                                                        </h5>
+                                                        <p class="mb-0 f-12 text-dark-grey">
+                                                            Trainee
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        @*<td class="px-2">
+                                            </td>
+                                            @*<td class="px-2">
                                     <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#absent-modal"
                                     class="edit-attendance" data-user-id="1" data-attendance-date="1">
                                     <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
@@ -328,90 +347,111 @@
                                     @*-------------Attendance Details Modal Ends (x)----------------------------
                                     </td>*@
 
-                                        @*     Tick/Cross     *@
+                                            @*     Tick/Cross     *@
 
 
 
-                                        @{
+                                            @{
 
-                                            string MonthCur = "";
-                                            string MonthCur2 = "";
+                                                string MonthCur = "";
+                                                string MonthCur2 = "";
 
                                                 @for (int i = 1; i <= ViewBag.data.Count; i++)
-                                            {
-
-                                                if (IsAttendance == 1)
                                                 {
 
-                                                    if (reportViewModel.empAttendances[empCount].CheckInTime.Value.Day == i)
+                                                    if (IsAttendance == 1)
                                                     {
-                                                            <td class="px-2">
 
-                                                                <a href="javascript:;" class="view-attendance" data-bs-toggle="modal" data-bs-target="#present-modal" data-attendance-id="@reportViewModel.empAttendances[empCount].Id">
+                                                        if (reportViewModel.empAttendances[empCount].CheckInTime.Value.Day == i)
+                                                        {
+                                                            <td class="px-2">
+                                                                <a href="javascript:;" class="view-attendance" data-bs-toggle="modal" data-bs-target="#present-modal"
+                                               data-attendance-id="@reportViewModel.empAttendances[empCount].Id"
+                                               data-emp-index="@reportViewModel.Emp_name"
+                                               data-tick-date="@reportViewModel.empAttendances[empCount].CheckInTime.Value.Date.ToString("dd-MM-yyyy")"
+                                               data-time-in="@reportViewModel.empAttendances[empCount].CheckInTime.Value.DateTime.ToShortTimeString()"
+                                               data-time-out="@reportViewModel.empAttendances[empCount].CheckOutTime.Value.DateTime.ToShortTimeString()"
+                                               data-working-hours="@(reportViewModel.empAttendances[empCount].CheckOutTime.Value.Hour - reportViewModel.empAttendances[empCount].CheckInTime.Value.Hour)"
+                                               data-check-in-date-time="@reportViewModel.empAttendances[empCount].CheckInTime.Value.DateTime.ToString("dd-MM-yyyy hh:mm tt")"
+                                               data-check-out-date-time="@reportViewModel.empAttendances[empCount].CheckOutTime.Value.DateTime.ToString("dd-MM-yyyy hh:mm tt")"
+                                               data-location="@reportViewModel.empAttendances[empCount].WorkingFrom">
                                                                     <svg class="svg-inline--fa fa-check fa-w-16 text-primary" aria-hidden="true"
-                                                         focusable="false" data-prefix="fa" data-icon="check" role="img"
-                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                                                         data-fa-i2svg="">
+                                                     focusable="false" data-prefix="fa" data-icon="check" role="img"
+                                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                                                     data-fa-i2svg="">
                                                                         <path fill="currentColor"
-                                                              d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
+                                                          d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z">
                                                                         </path>
                                                                     </svg>
                                                                     <!-- <i class="fa fa-check text-primary"></i> Font Awesome fontawesome.com -->
                                                                 </a>
                                                             </td>
-                                                        totalAttendance++;
-                                                        if (reportViewModel.empAttendances.Count != (empCount + 1))
-                                                        {
-                                                            empCount++;
+                                                            totalAttendance++;
+                                                            if (reportViewModel.empAttendances.Count != (empCount + 1))
+                                                            {
+                                                                empCount++;
+                                                            }
+
+
                                                         }
 
+                                                        else
+                                                        {
 
-                                                    }
-
-                                                    else
-                                                    {
                                                             <td class="px-2">
-                                                                <a href="javascript:;" class="edit-attendance" data-user-id="@reportViewModel.empAttendances[empCount].Id"
-                                                   data-attendance-date="2">
+                                                                <a href="javascript:;" class="edit-attendance"
+                                               data-bs-toggle="modal" data-bs-target="#absent-modal"
+                                               data-attd-id="@reportViewModel.empAttendances[empCount].Id"
+                                               data-cemployee-id="@reportViewModel.empAttendances[empCount].EmployeeId"
+                                               data-cemp-index="@reportViewModel.Emp_name"
+                                               data-ctime-in="@reportViewModel.empAttendances[empCount].CheckInTime.Value.DateTime.ToShortTimeString()"
+                                               data-ctime-out="@reportViewModel.empAttendances[empCount].CheckOutTime.Value.DateTime.ToShortTimeString()"
+                                               data-c-checkin-lat="@reportViewModel.empAttendances[empCount].CheckInLat"
+                                               data-c-working-from="@reportViewModel.empAttendances[empCount].WorkingFrom"
+                                               data-c-is-late="@reportViewModel.empAttendances[empCount].IsLate"
+                                               data-c-checkout-lat="@reportViewModel.empAttendances[empCount].CheckOutLat"
+                                               data-c-is-halfday="@reportViewModel.empAttendances[empCount].IsHalfDay">
                                                                     <svg class="svg-inline--fa fa-times fa-w-11 text-lightest" aria-hidden="true"
-                                                         focusable="false" data-prefix="fa" data-icon="times" role="img"
-                                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
-                                                         data-fa-i2svg="">
+                                                     focusable="false" data-prefix="fa" data-icon="times" role="img"
+                                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"
+                                                     data-fa-i2svg="">
                                                                         <path fill="currentColor"
-                                                              d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
+                                                          d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z">
                                                                         </path>
                                                                     </svg>
                                                                     <!-- <i class="fa fa-times text-lightest"></i> Font Awesome fontawesome.com -->
                                                                 </a>
                                                             </td>
+                                                        }
                                                     }
-                                                }
 
-                                                else if (IsAttendance == 0)
-                                                {
+                                                    else if (IsAttendance == 0)
+                                                    {
                                                         <td class="px-2">
 
                                                             -
                                                         </td>
-                                                }
+                                                    }
 
-                                                MonthCur = Convert.ToString(i);
-                                                MonthCur2 = "0" + MonthCur;
+                                                    MonthCur = Convert.ToString(i);
+                                                    MonthCur2 = "0" + MonthCur;
                                                     @if ((MonthCur == DateTime.Now.ToString("dd") || MonthCur2 == DateTime.Now.ToString("dd")) && reportViewModel.empAttendances[empCount].CheckInTime.Value.Month == int.Parse(DateTime.Now.ToString("MM")) && reportViewModel.empAttendances[empCount].Year == DateTime.Now.ToString("yyyy"))
-                                                {
-                                                    IsAttendance = 0;
+                                                    {
+                                                        IsAttendance = 0;
+
+                                                    }
 
                                                 }
 
                                             }
 
-                                        }
+                                            <td class="text-dark f-w-500 text-right attendance-total px-2 w-100">
+                                                @totalAttendance / <span class="text-lightest">@ViewBag.data.Count</span>
+                                            </td>
 
-                                        <td class="text-dark f-w-500 text-right attendance-total px-2 w-100">
-                                            @totalAttendance / <span class="text-lightest">@ViewBag.data.Count</span>
-                                        </td>
-                                       
-                                    </tr>
+                                        </tr>
+                                    }
+                                    prevEmployeeId = reportViewModel.empAttendances[empCount].EmployeeId;
                                 }
                             </tbody>
                         </table>
@@ -422,57 +462,59 @@
 
         @*Cross Modal*@
         <div class="modal" id="absent-modal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
+            <form id="MarkAttendance" method="post" asp-action="EditAttendance" asp-controller="CustomerAttendanceReport" class="needs-validation" enctype="multipart/form-data" novalidate>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
 
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h5 class="modal-title">Attendance Details</h5>
-                        <button type="button" class="btn-close"
-                                data-bs-dismiss="modal"></button>
-                    </div>
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h5 class="modal-title">Attendance Details</h5>
+                            <button type="button" class="btn-close"
+                                    data-bs-dismiss="modal"></button>
+                        </div>
 
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12 mb-4">
+                        <!-- Modal body -->
+                        <div class="modal-body">
 
-                                <div class="media align-items-center mw-250 d-flex">
-                                    <a href="#"
-                                       class="position-relative">
-                                        <img src="https://i.pravatar.cc/300?u=admin@example.com"
-                                             class="mr-2 taskEmployeeImg rounded-circle"
-                                             alt="Loy Bode" title="Loy Bode">
-                                    </a>
-                                    <div class="media-body px-2">
-                                        <h5 class="mb-0 f-12">
-                                            <a href="#"
-                                               class="text-darkest-grey ">Loy Bode</a>
-                                            <span class="badge badge-secondary">
-                                                It's
-                                                you
-                                            </span>
-                                        </h5>
-                                        <p class="mb-0 f-12 text-dark-grey">
-                                            Trainee
-                                        </p>
+                            <div class="row">
+                                <div class="col-md-12 mb-4">
+
+                                    <div class="media align-items-center mw-250 d-flex">
+                                        <a href="#"
+                                           class="position-relative">
+                                            <img src="https://i.pravatar.cc/300?u=admin@example.com"
+                                                 class="mr-2 taskEmployeeImg rounded-circle"
+                                                 alt="Loy Bode" title="Loy Bode">
+                                        </a>
+                                        <div class="media-body px-2">
+                                            <h5 class="mb-0 f-12">
+                                                <a href="#"
+                                                   class="text-darkest-grey cEmpName">Loy Bode</a>
+                                                <span></span>
+                                                <!--    <span class="badge badge-secondary">
+                                                      It's
+                                                      you
+                                                  </span>-->
+                                            </h5>
+                                            <p class="mb-0 f-12 text-dark-grey">
+                                                Trainee
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12">
 
-                                <h5 class="f-w-500 f-15 d-flex justify-content-between">
-                                    Date - 01-09-2022 <span class="badge badge-info f-14"
-                                                            style="background-color: #ff0000">
-                                        Day
-                                        Shift
-                                    </span>
-                                </h5>
+                                    <!--  <h5 class="f-w-500 f-15 d-flex justify-content-between">
+                                         Date - 01-09-2022 <span class="badge badge-info f-14"
+                                                                 style="background-color: #ff0000">
+                                             Day
+                                             Shift
+                                         </span>
+                                     </h5>-->
 
-                                <form method="POST" id="attendance-container"
-                                      autocomplete="off">
+
                                     <input type="password" class="autocomplete-password"
                                            style="opacity: 0;position: absolute;">
                                     <input type="search" class="autocomplete-password"
@@ -488,7 +530,8 @@
 
                                     <input type="hidden" name="attendance_date"
                                            value="2022-09-01">
-                                    <input type="hidden" name="user_id" value="1">
+                                    <input type="hidden" name="EmployeeId" id="cEmployeeId" value="1">
+                                    <input type="hidden" name="Id" id="cId" value="1">
 
                                     <div class="row">
 
@@ -503,14 +546,14 @@
 
                                                     </label>
 
-                                                    <input type="text"
+                                                    <input type="time"
                                                            class="form-control height-35 f-14"
                                                            placeholder="e.g. 10:00 AM"
-                                                           value="" name="clock_in_time"
-                                                           id="clock-in-time">
+                                                           value="" name="CheckInTime"
+                                                           id="cCheckInTime">
 
                                                 </div>
-                                                <div class="bootstrap-timepicker-widget dropdown-menu">
+                                                <!--<div class="bootstrap-timepicker-widget dropdown-menu">
                                                     <table>
                                                         <tbody>
                                                             <tr>
@@ -592,7 +635,7 @@
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                </div>
+                                                </div>-->
                                             </div>
                                         </div>
 
@@ -609,7 +652,7 @@
                                                        class="form-control height-35 f-14"
                                                        placeholder="e.g. 10:00 AM"
                                                        value="59.103.108.17"
-                                                       name="clock_in_ip" id="clock-in-ip">
+                                                       name="CheckInLat" id="cCheckInLat">
 
                                             </div>
                                         </div>
@@ -623,9 +666,9 @@
                                                 </label>
 
                                                 <div class="custom-control custom-switch">
-                                                    <input type="checkbox" name="late"
+                                                    <input type="checkbox" name="IsLate"
                                                            class="custom-control-input"
-                                                           id="lateday">
+                                                           id="cIsLate">
                                                     <label class="custom-control-label cursor-pointer f-14"
                                                            for="lateday"></label>
                                                 </div>
@@ -647,96 +690,96 @@
 
                                                     </label>
 
-                                                    <input type="text"
+                                                    <input type="time"
                                                            class="form-control height-35 f-14"
                                                            placeholder="e.g. 10:00 AM"
-                                                           value="" name="clock_out_time"
-                                                           id="clock-out">
+                                                           value="" name="CheckOutTime"
+                                                           id="cCheckOutTime">
 
                                                 </div>
-                                                <div class="bootstrap-timepicker-widget dropdown-menu">
-                                                    <table>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <a href="#"
-                                                                       data-action="incrementHour">
-                                                                        <i class="glyphicon glyphicon-chevron-up"></i>
-                                                                    </a>
-                                                                </td>
-                                                                <td class="separator">
-                                                                    &nbsp;
-                                                                </td>
-                                                                <td>
-                                                                    <a href="#"
-                                                                       data-action="incrementMinute">
-                                                                        <i class="glyphicon glyphicon-chevron-up"></i>
-                                                                    </a>
-                                                                </td>
-                                                                <td class="separator">
-                                                                    &nbsp;
-                                                                </td>
-                                                                <td class="meridian-column">
-                                                                    <a href="#"
-                                                                       data-action="toggleMeridian">
-                                                                        <i class="glyphicon glyphicon-chevron-up"></i>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <input type="text"
-                                                                           name="hour"
-                                                                           class="form-control bootstrap-timepicker-hour"
-                                                                           maxlength="2">
-                                                                </td>
-                                                                <td class="separator">
-                                                                    :
-                                                                </td>
-                                                                <td>
-                                                                    <input type="text"
-                                                                           name="minute"
-                                                                           class="form-control bootstrap-timepicker-minute"
-                                                                           maxlength="2">
-                                                                </td>
-                                                                <td class="separator">
-                                                                    &nbsp;
-                                                                </td>
-                                                                <td>
-                                                                    <input type="text"
-                                                                           name="meridian"
-                                                                           class="form-control bootstrap-timepicker-meridian"
-                                                                           maxlength="2">
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <a href="#"
-                                                                       data-action="decrementHour">
-                                                                        <i class="glyphicon glyphicon-chevron-down"></i>
-                                                                    </a>
-                                                                </td>
-                                                                <td class="separator">
-                                                                </td>
-                                                                <td>
-                                                                    <a href="#"
-                                                                       data-action="decrementMinute">
-                                                                        <i class="glyphicon glyphicon-chevron-down"></i>
-                                                                    </a>
-                                                                </td>
-                                                                <td class="separator">
-                                                                    &nbsp;
-                                                                </td>
-                                                                <td>
-                                                                    <a href="#"
-                                                                       data-action="toggleMeridian">
-                                                                        <i class="glyphicon glyphicon-chevron-down"></i>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                <!-- <div class="bootstrap-timepicker-widget dropdown-menu">
+                                                      <table>
+                                                          <tbody>
+                                                              <tr>
+                                                                  <td>
+                                                                      <a href="#"
+                                                                         data-action="incrementHour">
+                                                                          <i class="glyphicon glyphicon-chevron-up"></i>
+                                                                      </a>
+                                                                  </td>
+                                                                  <td class="separator">
+                                                                      &nbsp;
+                                                                  </td>
+                                                                  <td>
+                                                                      <a href="#"
+                                                                         data-action="incrementMinute">
+                                                                          <i class="glyphicon glyphicon-chevron-up"></i>
+                                                                      </a>
+                                                                  </td>
+                                                                  <td class="separator">
+                                                                      &nbsp;
+                                                                  </td>
+                                                                  <td class="meridian-column">
+                                                                      <a href="#"
+                                                                         data-action="toggleMeridian">
+                                                                          <i class="glyphicon glyphicon-chevron-up"></i>
+                                                                      </a>
+                                                                  </td>
+                                                              </tr>
+                                                              <tr>
+                                                                  <td>
+                                                                      <input type="text"
+                                                                             name="hour"
+                                                                             class="form-control bootstrap-timepicker-hour"
+                                                                             maxlength="2">
+                                                                  </td>
+                                                                  <td class="separator">
+                                                                      :
+                                                                  </td>
+                                                                  <td>
+                                                                      <input type="text"
+                                                                             name="minute"
+                                                                             class="form-control bootstrap-timepicker-minute"
+                                                                             maxlength="2">
+                                                                  </td>
+                                                                  <td class="separator">
+                                                                      &nbsp;
+                                                                  </td>
+                                                                  <td>
+                                                                      <input type="text"
+                                                                             name="meridian"
+                                                                             class="form-control bootstrap-timepicker-meridian"
+                                                                             maxlength="2">
+                                                                  </td>
+                                                              </tr>
+                                                              <tr>
+                                                                  <td>
+                                                                      <a href="#"
+                                                                         data-action="decrementHour">
+                                                                          <i class="glyphicon glyphicon-chevron-down"></i>
+                                                                      </a>
+                                                                  </td>
+                                                                  <td class="separator">
+                                                                  </td>
+                                                                  <td>
+                                                                      <a href="#"
+                                                                         data-action="decrementMinute">
+                                                                          <i class="glyphicon glyphicon-chevron-down"></i>
+                                                                      </a>
+                                                                  </td>
+                                                                  <td class="separator">
+                                                                      &nbsp;
+                                                                  </td>
+                                                                  <td>
+                                                                      <a href="#"
+                                                                         data-action="toggleMeridian">
+                                                                          <i class="glyphicon glyphicon-chevron-down"></i>
+                                                                      </a>
+                                                                  </td>
+                                                              </tr>
+                                                          </tbody>
+                                                      </table>
+                                                  </div> -->
                                             </div>
                                         </div>
 
@@ -753,8 +796,8 @@
                                                        class="form-control height-35 f-14"
                                                        placeholder="e.g. 10:00 AM"
                                                        value="59.103.108.17"
-                                                       name="clock_out_ip"
-                                                       id="clock-out-ip-1">
+                                                       name="CheckOutLat"
+                                                       id="cCheckOutLat">
 
                                             </div>
                                         </div>
@@ -769,9 +812,9 @@
 
                                                 <div class="custom-control custom-switch">
                                                     <input type="checkbox"
-                                                           name="halfday"
+                                                           name="IsHalfDay"
                                                            class="custom-control-input"
-                                                           id="halfday">
+                                                           id="cIsHalfDay">
                                                     <label class="custom-control-label cursor-pointer f-14"
                                                            for="halfday"></label>
                                                 </div>
@@ -856,20 +899,12 @@
                                             <div class="form-group mb-0">
 
                                                 <div class="dropdown bootstrap-select select-picker">
-                                                    <select name="work_from_type"
-                                                            id="work_from_type"
-                                                            data-live-search="true"
-                                                            class="form-control select-picker"
-                                                            data-size="8">
-                                                        <option value="office">
-                                                            Office
-                                                        </option>
-                                                        <option value="home">
-                                                            Home
-                                                        </option>
-                                                        <option value="other">
-                                                            Other
-                                                        </option>
+
+                                                    <select name="WorkingFrom" id="cWorkingFrom" data-live-search="true" class="form-control dropdown-toggle select-picker" data-size="8">
+                                                        <option value="">--</option>
+                                                        <option value="Office">Office</option>
+                                                        <option value="Home">Home</option>
+                                                        <option value="Other">Other</option>
                                                     </select>
                                                     <!-- <button type="button"
                                                         tabindex="-1"
@@ -937,22 +972,25 @@
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-danger"
-                                data-bs-dismiss="modal">
-                            Close
-                        </button>
-                        <button type="button" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-danger"
+                                    data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+
                     </div>
 
                 </div>
-            </div>
+            </form>
         </div>
         @*Cross Modal End*@
 
@@ -984,9 +1022,8 @@
                                                 <div class="col-12">
                                                     <h5 class="card-title f-15 f-w-500 text-darkest-grey mb-0">
                                                         <a href="#"
-                                                           class="text-darkest-grey">
-                                                            Dayton
-                                                            Morar
+                                                           class="text-darkest-grey empName">
+
                                                         </a>
 
                                                     </h5>
@@ -1006,7 +1043,7 @@
                             <div class="col-md-6">
                                 <div class="card bg-white border-0 b-shadow-4">
                                     <div class="card-header bg-white border-0 text-capitalize d-flex justify-content-between p-20">
-                                        <h4 class="f-18 f-w-500 mb-0">Date - 01-09-2022</h4>
+                                        <h4 id="TickDate" class="f-18 f-w-500 mb-0">Date - 01-09-2022</h4>
 
 
 
@@ -1016,16 +1053,16 @@
                                         <div class="punch-status">
                                             <div class="border rounded p-3 mb-3 bg-light">
                                                 <h6 class="f-13">Clock In</h6>
-                                                <p class="mb-0">02:30 pm</p>
+                                                <p id="ClockInTime" class="mb-0">02:30 pm</p>
                                             </div>
                                             <div class="punch-info">
                                                 <div class="punch-hours f-13">
-                                                    <span>5 hrs </span>
+                                                    <span id="TotalHours">5 hrs </span>
                                                 </div>
                                             </div>
                                             <div class="border rounded p-3 bg-light">
                                                 <h6 class="f-13">Clock Out</h6>
-                                                <p class="mb-0">
+                                                <p id="ClockOutTime" class="mb-0">
                                                     07:30 pm
                                                 </p>
                                             </div>
@@ -1059,7 +1096,7 @@
                                                                       d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm92.49,313h0l-20,25a16,16,0,0,1-22.49,2.5h0l-67-49.72a40,40,0,0,1-15-31.23V112a16,16,0,0,1,16-16h32a16,16,0,0,1,16,16V256l58,42.5A16,16,0,0,1,348.49,321Z">
                                                                 </path>
                                                             </svg><!-- <i class="fa fa-clock"></i> Font Awesome fontawesome.com -->
-                                                            01-09-2022 02:30 pm
+                                                            <span id="checkInDTime"></span>
 
                                                             <svg class="svg-inline--fa fa-map-marker-alt fa-w-12 ml-2" aria-hidden="true"
                                                                  focusable="false" data-prefix="fa" data-icon="map-marker-alt" role="img"
@@ -1069,7 +1106,7 @@
                                                                 </path>
                                                             </svg>
                                                             <!-- <i class="fa fa-map-marker-alt ml-2"></i> Font Awesome fontawesome.com -->
-                                                            (office)
+                                                            (<span id="checkInLoc"></span>)
 
 
 
@@ -1085,7 +1122,7 @@
                                                                       d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm92.49,313h0l-20,25a16,16,0,0,1-22.49,2.5h0l-67-49.72a40,40,0,0,1-15-31.23V112a16,16,0,0,1,16-16h32a16,16,0,0,1,16,16V256l58,42.5A16,16,0,0,1,348.49,321Z">
                                                                 </path>
                                                             </svg><!-- <i class="fa fa-clock"></i> Font Awesome fontawesome.com -->
-                                                            01-09-2022 07:30 pm
+                                                            <span id="checkOutDTime"></span>
                                                         </p>
                                                     </li>
                                                 </ul>
@@ -1182,8 +1219,7 @@
                                         <div class="form-group mb-0">
 
                                             <div class="dropdown">
-                                                <select id="EmployeeId" name="EmployeeId" multiple asp-items="ViewBag.EmployeeList" class="form-control dropdown-toggle">
-                                                    <option value="0">--</option>
+                                                <select id="EmployeeId" name="EmployeeId" multiple asp-items="ViewBag.EmployeeList" class="form-control dropdown-toggle" required>
                                                 </select>
                                             </div>
 
@@ -1201,10 +1237,7 @@
                                         <div class="form-group mb-0">
 
                                             <div class="dropdown">
-                                                <select name="location" id="location" data-live-search="true" class="form-control dropdown-toggle" data-size="8">
-                                                    <option selected="" value="1">
-                                                        Worksuite
-                                                    </option>
+                                                <select name="LocationID" id="location" data-live-search="true" asp-items="ViewBag.LocationList" class="form-control dropdown-toggle" data-size="8">
                                                 </select>
                                             </div>
 
@@ -1458,6 +1491,7 @@
 
         <input id="SelectedMonth" style="display:none" name="SelectedMonth" type="text" class="form-control">
         <input id="SelectedYear" style="display:none" name="SelectedYear" type="text" class="form-control">
+        <input id="SelectedEmployee" style="display:none" name="SelectedEmployee" type="text" class="form-control">
 
         <input type="submit" style="display:none" id="SubmitReq" value="Submit" />
     </form>
@@ -1468,16 +1502,60 @@
 @section Scripts{
 
     <script type="text/javascript">
+        function setFilter() {
+            var sValue = $("#sMon").val();
+            $("#filterMonth").val(sValue);
+
+            var sYear = $("#sYear").val();
+            $("#filterYear").val(sYear);
+
+            var sEmpID = $("#sEmpID").val();
+            $("#filterEmployee").val(sEmpID);
+        }
 
         $(document).ready(function() {
+
+
+
+
             $("#filterMonth").change(function() {
                 var SelectedMonth = $('#filterMonth  :selected').val();
                 var SelectedYear = $('#filterYear  :selected').val();
+                var SelectedEmployee = $('#filterEmployee  :selected').val();
+                document.getElementById('SelectedEmployee').value = SelectedEmployee;
                 document.getElementById('SelectedMonth').value = SelectedMonth;
                 document.getElementById('SelectedYear').value = SelectedYear;
                 $("#SubmitReq").click();
 
             });
+
+            $("#filterYear").change(function() {
+                var SelectedMonth = $('#filterMonth  :selected').val();
+                var SelectedYear = $('#filterYear  :selected').val();
+                var SelectedEmployee = $('#filterEmployee  :selected').val();
+                document.getElementById('SelectedEmployee').value = SelectedEmployee;
+                document.getElementById('SelectedMonth').value = SelectedMonth;
+                document.getElementById('SelectedYear').value = SelectedYear;
+                $("#SubmitReq").click();
+
+            });
+
+            $("#filterEmployee").change(function() {
+                var SelectedMonth = $('#filterMonth  :selected').val();
+                var SelectedYear = $('#filterYear  :selected').val();
+                var SelectedEmployee = $('#filterEmployee  :selected').val();
+                document.getElementById('SelectedEmployee').value = SelectedEmployee;
+                document.getElementById('SelectedMonth').value = SelectedMonth;
+                document.getElementById('SelectedYear').value = SelectedYear;
+                $("#SubmitReq").click();
+
+            });
+
+
+            $(document).on("click", ".view-attendance", OpenTickModalPopUp);
+
+
+            $(document).on("click", ".edit-attendance", OpenCrossModalPopUp);
 
             $(".multi_date_div").hide();
 
@@ -1519,6 +1597,84 @@
             }
 
         }
+
+        function OpenTickModalPopUp() {
+            var itemName = $(this).data("attendance-id");
+            var empName = $(this).data("emp-index");
+            var TickDate = $(this).data("tick-date");
+            var TimeIn = $(this).data("time-in");
+            var TimeOut = $(this).data("time-out");
+            var WorkingHours = $(this).data("working-hours");
+            var CheckInDateTime = $(this).data("check-in-date-time");
+            var CheckOutDateTime = $(this).data("check-out-date-time");
+            var checkInLoc = $(this).data("location");
+
+
+
+            //alert(itemName);
+
+            $('#dvData').html(itemName);
+            $('.empName').html(empName);
+            $('#TickDate').html('Date - ' + TickDate);
+            $('#ClockInTime').html(TimeIn);
+            $('#ClockOutTime').html(TimeOut);
+            $('#TotalHours').html(WorkingHours + ' hrs');
+            $('#checkInDTime').html(CheckInDateTime);
+            $('#checkOutDTime').text(CheckOutDateTime);
+            $('#checkInLoc').html(checkInLoc);
+
+            $("#present-modal").modal();
+        }
+        function OpenCrossModalPopUp() {
+            //var itemName = $(this).data("attd-id");
+
+            var empName = $(this).data("cemp-index");
+            var AttdID = $(this).data("attd-id");
+            var cEmployeeId = $(this).data("cemployee-id");
+            var cCheckInTime = $(this).data("ctime-in");
+            var cCheckOutTime = $(this).data("ctime-out");
+
+            var CheckInLat = $(this).data("c-checkin-lat");
+            var IsLate = $(this).data("c-is-late");
+            var CheckOutLat = $(this).data("c-checkout-lat");
+            var IsHalfDay = $(this).data("c-is-halfday");
+            var WorkingFrom = $(this).data("c-working-from");
+
+            //var TickDate = $(this).data("tick-date");
+            //var TimeIn = $(this).data("time-in");
+            //var TimeOut = $(this).data("time-out");
+            //var WorkingHours = $(this).data("working-hours");
+            //var CheckInDateTime = $(this).data("check-in-date-time");
+            //var CheckOutDateTime = $(this).data("check-out-date-time");
+            //var checkInLoc = $(this).data("location");
+
+
+
+            //alert(AttdID);
+            //alert(CheckInLat);
+            $('.cEmpName').html(empName);
+            $('#cId').val(AttdID);
+            $('#cEmployeeId').val(cEmployeeId);
+            $('#cCheckInTime').val(cCheckInTime);
+            $('#cCheckOutTime').val(cCheckOutTime);
+            $('#cCheckInLat').val(CheckInLat);
+            if (IsLate == 'yes') {
+                $('#cIsLate').prop('checked', true);
+            }
+            if (IsHalfDay == 'yes') {
+                $('#cIsHalfDay').prop('checked', true);
+            }
+
+            //$('#cIsLate').val(IsLate);
+            $('#cCheckOutLat').val(CheckOutLat);
+            //$('#cIsHalfDay').val(IsHalfDay);
+            $('#cWorkingFrom').val(WorkingFrom);
+
+
+            $("#absent-modal").modal();
+        }
+
+
 
     </script>
 }

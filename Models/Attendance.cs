@@ -12,6 +12,7 @@ namespace HRMS.Models
         [Key]
         public int Id { get; set; }
         public int EmployeeId { get; set; }
+        public int LocationID { get; set; }
         public int DepartmentID { get; set; }
         public string MarkAttendanceBY { get; set; }
         public string Year { get; set; }

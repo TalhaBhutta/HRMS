@@ -9,6 +9,7 @@ using HRMS.Data;
 using HRMS.Models;
 using HRMS.ViewModels;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HRMS.Customers
 {
@@ -19,11 +20,11 @@ namespace HRMS.Customers
         public List<string> AllDaysOfWeekList = new List<string>();
         public ActionResult xIndex()
         {
-        //    return View();
-        //}
+            //    return View();
+            //}
 
-        //public ActionResult AttendanceTable()
-        //{
+            //public ActionResult AttendanceTable()
+            //{
             var cId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             Customer c = db.Customer.FirstOrDefault(u => u.UserId == cId);
@@ -60,16 +61,16 @@ namespace HRMS.Customers
             //};
             //List<int> attDays1;
 
-            var attDays1 =  from a in db.Attendance
-                            join b in db.Assignment on a.AssignmentId equals b.Id
-                            join s in db.Shift on b.ShiftId equals s.Id
-                            join cb in db.CustomerBranch on s.BranchId equals cb.BranchId
-                            join e in db.Employee on a.EmployeeId equals e.Id
-                            where cb.CustomerId == c.Id
-                                && a.CheckInTime.Value.Month == Month
-                                && a.CheckInTime.Value.Year == Year
-                            //select new {Employee_name = e.FirstName + ' ' + e.LastName, AttendedDay = a.CheckInTime.Value.Day };
-                            select new { EmployeeID = e.Id, AttendedDay = a.CheckInTime.Value.Day };
+            var attDays1 = from a in db.Attendance
+                           join b in db.Assignment on a.AssignmentId equals b.Id
+                           join s in db.Shift on b.ShiftId equals s.Id
+                           join cb in db.CustomerBranch on s.BranchId equals cb.BranchId
+                           join e in db.Employee on a.EmployeeId equals e.Id
+                           where cb.CustomerId == c.Id
+                               && a.CheckInTime.Value.Month == Month
+                               && a.CheckInTime.Value.Year == Year
+                           //select new {Employee_name = e.FirstName + ' ' + e.LastName, AttendedDay = a.CheckInTime.Value.Day };
+                           select new { EmployeeID = e.Id, AttendedDay = a.CheckInTime.Value.Day };
 
 
             //attDays1.Where(x => x. == false);
@@ -79,18 +80,18 @@ namespace HRMS.Customers
 
             //                }).ToList();
             var results2 = (from a in db.Attendance
-                           join b in db.Assignment on a.AssignmentId equals b.Id
-                           join s in db.Shift on b.ShiftId equals s.Id
-                           join cb in db.CustomerBranch on s.BranchId equals cb.BranchId
-                           join e in db.Employee on a.EmployeeId equals e.Id
-                           where cb.CustomerId == c.Id
-                             && a.CheckInTime.Value.Month == Month
-                             && a.CheckInTime.Value.Year == Year
+                            join b in db.Assignment on a.AssignmentId equals b.Id
+                            join s in db.Shift on b.ShiftId equals s.Id
+                            join cb in db.CustomerBranch on s.BranchId equals cb.BranchId
+                            join e in db.Employee on a.EmployeeId equals e.Id
+                            where cb.CustomerId == c.Id
+                              && a.CheckInTime.Value.Month == Month
+                              && a.CheckInTime.Value.Year == Year
                             select new CustomerAttendanceReportViewModel()
-                           {
-                               Emp_name = e.FirstName + ' ' + e.LastName,
-                               empAttendances = db.Attendance.Where(a => a.EmployeeId == e.Id).ToList()
-                           }).ToList();
+                            {
+                                Emp_name = e.FirstName + ' ' + e.LastName,
+                                empAttendances = db.Attendance.Where(a => a.EmployeeId == e.Id).ToList()
+                            }).ToList();
 
             var results = (from a in db.Attendance
                            join b in db.Assignment on a.AssignmentId equals b.Id
@@ -116,17 +117,17 @@ namespace HRMS.Customers
                                //OutTime = a.CheckInTime.Value.TimeOfDay,
                                //empAttendances = db.Attendance.Where(a => a.EmployeeId == e.Id).ToList(),
                                //attDays = db.Attendance.Where(a => a.EmployeeId == e.Id).Select(a => a.CheckInTime.Value.Day).ToList()
-                        //attDays = attDays1.Where(a => a.EmployeeID == e.Id).Select(x => x.AttendedDay).ToList()
-                        attDays = (from a in db.Attendance
-                                  join b in db.Assignment on a.AssignmentId equals b.Id
-                                  join s in db.Shift on b.ShiftId equals s.Id
-                                  join cb in db.CustomerBranch on s.BranchId equals cb.BranchId
-                                  join e in db.Employee on a.EmployeeId equals e.Id
-                                  where cb.CustomerId == c.Id
-                                      && a.CheckInTime.Value.Month == Month
-                                      && a.CheckInTime.Value.Year == Year
-                                  //select new {Employee_name = e.FirstName + ' ' + e.LastName, AttendedDay = a.CheckInTime.Value.Day };
-                                  select new { a.CheckInTime.Value.Day }
+                               //attDays = attDays1.Where(a => a.EmployeeID == e.Id).Select(x => x.AttendedDay).ToList()
+                               attDays = (from a in db.Attendance
+                                          join b in db.Assignment on a.AssignmentId equals b.Id
+                                          join s in db.Shift on b.ShiftId equals s.Id
+                                          join cb in db.CustomerBranch on s.BranchId equals cb.BranchId
+                                          join e in db.Employee on a.EmployeeId equals e.Id
+                                          where cb.CustomerId == c.Id
+                                              && a.CheckInTime.Value.Month == Month
+                                              && a.CheckInTime.Value.Year == Year
+                                          //select new {Employee_name = e.FirstName + ' ' + e.LastName, AttendedDay = a.CheckInTime.Value.Day };
+                                          select new { a.CheckInTime.Value.Day }
                                   ).Select(x => x.Day).ToList()
                                //attDays = (List<int>)(from a in db.Attendance
                                //                       join b in db.Assignment on a.AssignmentId equals b.Id
@@ -166,25 +167,29 @@ namespace HRMS.Customers
             //}
 
             //return View(empWithDate);
+
             return View(results);
 
         }
 
-        public IActionResult Index(string SelectedMonth, string SelectedYear)
+        public IActionResult Index(string SelectedMonth, string SelectedYear, string SelectedEmployee)
         {
             var cId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Customer c = db.Customer.FirstOrDefault(u => u.UserId == cId);
 
-            int mon, year, noOfDays = 0;
+            int mon, year, noOfDays,empID = 0;
 
-            if (SelectedMonth == null || SelectedYear == null)
+            if (SelectedMonth == null || SelectedMonth == "undefined" || SelectedYear == null || SelectedYear == "undefined")
             {
                 SelectedMonth = DateTime.Now.ToString("MM");
                 SelectedYear = DateTime.Now.ToString("yyyy");
             }
 
-
-
+            if(SelectedEmployee != null && SelectedEmployee != "all")
+            {
+                empID = int.Parse(SelectedEmployee);
+            }
+            
             mon = int.Parse(SelectedMonth);
             DateTimeOffset dateTime = DateTimeOffset.Now;
             dateTime = new DateTimeOffset(2008, mon, 1, 8, 6, 32,
@@ -237,39 +242,87 @@ namespace HRMS.Customers
             //                                Emp_name = e.FirstName + ' ' + e.LastName,
             //                                empAttendances = db.Attendance.Where(a => a.EmployeeId == e.Id && a.CheckInTime.Value.Month == mon && a.CheckInTime.Value.Year == year).ToList()
             //                            }).ToList();
+            //int ds = 5;
+            //.Where(a => a.EmployeeId == ds)
 
+            ViewData["EmployeeList"] = new SelectList(db.Employee, "Id", "FirstName", SelectedEmployee);
+            ViewData["LocationList"] = new SelectList(db.Locations, "Id", "Address");
+            
 
-            var results = (from a in db.Attendance
-                           join b in db.Assignment on a.AssignmentId equals b.Id
-                           join s in db.Shift on b.ShiftId equals s.Id
-                           join cb in db.CustomerBranch on s.BranchId equals cb.BranchId
-                           join e in db.Employee on a.EmployeeId equals e.Id
-                           where cb.CustomerId == c.Id
-                                && a.CheckInTime.Value.Month == mon
-                                && a.CheckInTime.Value.Year == year
+            if (empID !=0)
+            {
+                var results = (from a in db.Attendance
+                               join b in db.Assignment on a.AssignmentId equals b.Id
+                               join s in db.Shift on b.ShiftId equals s.Id
+                               join cb in db.CustomerBranch on s.BranchId equals cb.BranchId
+                               join e in db.Employee on a.EmployeeId equals e.Id
+                               orderby e.Id
+                               where cb.CustomerId == c.Id
+                                    && a.CheckInTime.Value.Month == mon
+                                    && a.CheckInTime.Value.Year == year
+                                    && a.EmployeeId == empID
+                               //let EmpIds = db.Attendance.Select(emp => emp.EmployeeId).FirstOrDefault()
+                               select new CustomerAttendanceReportViewModel()
+                               {
+                                   Emp_name = e.FirstName + ' ' + e.LastName,
+                                   Selectedmonth = SelectedMonth,
+                                   Selectedyear=year,
+                                   Selectedemp = empID,
+                                   //attDays = (from a in db.Attendance
+                                   //           join b in db.Assignment on a.AssignmentId equals b.Id
+                                   //           join s in db.Shift on b.ShiftId equals s.Id
+                                   //           join cb in db.CustomerBranch on s.BranchId equals cb.BranchId
+                                   //           join e in db.Employee on a.EmployeeId equals e.Id
+                                   //           where cb.CustomerId == c.Id
+                                   //               && a.CheckInTime.Value.Month == mon
+                                   //               && a.CheckInTime.Value.Year == year
+                                   //           //select new {Employee_name = e.FirstName + ' ' + e.LastName, AttendedDay = a.CheckInTime.Value.Day };
+                                   //           select new { a.CheckInTime.Value.Day }
+                                   //   ).Select(x => x.Day).ToList(),
+                                   empAttendances = db.Attendance.Where(a => a.EmployeeId == e.Id && a.CheckInTime.Value.Month == mon && a.CheckInTime.Value.Year == year).OrderBy(e => e.CheckInTime).ToList(),
 
-                           select new CustomerAttendanceReportViewModel()
-                           {
-                               Emp_name = e.FirstName + ' ' + e.LastName,
-                              
-                               attDays = (from a in db.Attendance
-                                          join b in db.Assignment on a.AssignmentId equals b.Id
-                                          join s in db.Shift on b.ShiftId equals s.Id
-                                          join cb in db.CustomerBranch on s.BranchId equals cb.BranchId
-                                          join e in db.Employee on a.EmployeeId equals e.Id
-                                          where cb.CustomerId == c.Id
-                                              && a.CheckInTime.Value.Month == mon
-                                              && a.CheckInTime.Value.Year == year
-                                          //select new {Employee_name = e.FirstName + ' ' + e.LastName, AttendedDay = a.CheckInTime.Value.Day };
-                                          select new { a.CheckInTime.Value.Day }
-                                  ).Select(x => x.Day).ToList(),
+                               }).ToList();
+                return View(results);
+            }
+            else
+            {
+                var results = (from a in db.Attendance
+                               join b in db.Assignment on a.AssignmentId equals b.Id
+                               join s in db.Shift on b.ShiftId equals s.Id
+                               join cb in db.CustomerBranch on s.BranchId equals cb.BranchId
+                               join e in db.Employee on a.EmployeeId equals e.Id
+                               orderby e.Id
+                               where cb.CustomerId == c.Id
+                                    && a.CheckInTime.Value.Month == mon
+                                    && a.CheckInTime.Value.Year == year
+                               //let EmpIds = db.Attendance.Select(emp => emp.EmployeeId).FirstOrDefault()
+                               select new CustomerAttendanceReportViewModel()
+                               {
+                                   Emp_name = e.FirstName + ' ' + e.LastName,
+                                   Selectedmonth = SelectedMonth,
+                                   Selectedyear = year,
+                                   Selectedemp = empID,
+                                   //attDays = (from a in db.Attendance
+                                   //           join b in db.Assignment on a.AssignmentId equals b.Id
+                                   //           join s in db.Shift on b.ShiftId equals s.Id
+                                   //           join cb in db.CustomerBranch on s.BranchId equals cb.BranchId
+                                   //           join e in db.Employee on a.EmployeeId equals e.Id
+                                   //           where cb.CustomerId == c.Id
+                                   //               && a.CheckInTime.Value.Month == mon
+                                   //               && a.CheckInTime.Value.Year == year
+                                   //           //select new {Employee_name = e.FirstName + ' ' + e.LastName, AttendedDay = a.CheckInTime.Value.Day };
+                                   //           select new { a.CheckInTime.Value.Day }
+                                   //   ).Select(x => x.Day).ToList(),
+                                   empAttendances = db.Attendance.Where(a => a.EmployeeId == e.Id && a.CheckInTime.Value.Month == mon && a.CheckInTime.Value.Year == year).OrderBy(e => e.CheckInTime).ToList(),
 
-                               empAttendances = db.Attendance.Where(a => a.EmployeeId == e.Id && a.CheckInTime.Value.Month == mon && a.CheckInTime.Value.Year == year).ToList()
+                               }).ToList();
+                return View(results);
+            }
+            
 
+           
 
-                           }).ToList();
-
-            return View(results);
+            
         }
         [HttpPost]
         public IActionResult MarkAttendance(Attendance attendance)
@@ -281,6 +334,41 @@ namespace HRMS.Customers
                 var attendanceList = new List<Attendance>();
                 for (int i = 0; i < values.Length; i++)
                 {
+                    int mon, year, noOfDays = 0;
+
+                    string SelectedMonth = attendance.Month;
+                    string SelectedYear = attendance.Year;
+
+                    if (SelectedMonth == null || SelectedYear == null)
+                    {
+                        SelectedMonth = DateTime.Now.ToString("MM");
+                        SelectedYear = DateTime.Now.ToString("yyyy");
+                    }
+
+
+
+                    mon = int.Parse(SelectedMonth);
+
+
+                    year = int.Parse(SelectedYear);
+
+                    if (year != DateTime.Now.Year && mon != DateTime.Now.Month)
+                    {
+                        noOfDays = TotalNumberOfDaysInMonth(year, mon);
+                    }
+                    else
+                    {
+                        noOfDays = DateTime.Now.Day;
+                    }
+                    var atDate = Convert.ToDateTime(values[i]);
+
+                    DateTimeOffset CheckIndateTime = DateTimeOffset.Now;
+                    DateTimeOffset CheckOutdateTime = DateTimeOffset.Now;
+                    CheckIndateTime = new DateTimeOffset(atDate.Year, atDate.Month, atDate.Day, attendance.CheckInTime.Value.Hour, attendance.CheckInTime.Value.Minute, attendance.CheckInTime.Value.Second,
+                                         new TimeSpan(1, 0, 0));
+                    CheckOutdateTime = new DateTimeOffset(atDate.Year, atDate.Month, atDate.Day, attendance.CheckOutTime.Value.Hour, attendance.CheckOutTime.Value.Minute, attendance.CheckOutTime.Value.Second,
+                                        new TimeSpan(1, 0, 0));
+
                     attendanceList.Add(new Attendance
                     {
                         Id = attendance.Id,
@@ -288,12 +376,13 @@ namespace HRMS.Customers
                         DepartmentID = attendance.DepartmentID,
                         MarkAttendanceBY = attendance.MarkAttendanceBY,
                         Year = attendance.Year,
+                        LocationID = attendance.LocationID,
                         Month = attendance.Month,
                         IsLate = attendance.IsLate,
                         IsHalfDay = attendance.IsHalfDay,
-                        CheckInTime = attendance.CheckInTime,
-                        CheckOutTime = attendance.CheckOutTime,
-                        AssignmentId = attendance.AssignmentId,
+                        CheckInTime = CheckIndateTime,
+                        CheckOutTime = CheckOutdateTime,
+                        AssignmentId = 2,
                         TimesheetId = attendance.TimesheetId,
                         ManualCheckInLat = attendance.ManualCheckInLat,
                         ManualCheckInLong = attendance.ManualCheckInLong,
@@ -352,15 +441,25 @@ namespace HRMS.Customers
 
                 year = int.Parse(SelectedYear);
 
-                if (year != DateTime.Now.Year && mon != DateTime.Now.Month)
+                if (year == DateTime.Now.Year && mon == DateTime.Now.Month)
                 {
-                    noOfDays = TotalNumberOfDaysInMonth(year, mon);
+                    noOfDays = DateTime.Now.Day;
+
                 }
                 else
                 {
-                    noOfDays = DateTime.Now.Day;
+                    noOfDays = TotalNumberOfDaysInMonth(year, mon);
                 }
 
+
+                var EmpAttendanceList = db.Attendance.Where(x => x.EmployeeId == attendance.EmployeeId && x.CheckInTime.Value.Month == mon && x.CheckOutTime.Value.Year == year).ToList();
+                db.Attendance.RemoveRange(EmpAttendanceList);
+                db.SaveChanges();
+
+                //var Attendances = db.Attendance.Where(a => a. == "david");
+                //context.Users.Delete(u => u.FirstName == "firstname");
+                //db.Attendance.Remove(Attendances);
+                //db.Attendance.SubmitChanges();
 
                 var attendanceList = new List<Attendance>();
                 for (int i = 1; i <= noOfDays; i++)
@@ -368,6 +467,13 @@ namespace HRMS.Customers
                     DateTimeOffset dateTime = DateTimeOffset.Now;
                     dateTime = new DateTimeOffset(int.Parse(attendance.Year), mon, i, attendance.CheckInTime.Value.Hour, attendance.CheckInTime.Value.Minute, attendance.CheckInTime.Value.Second,
                                          new TimeSpan(1, 0, 0));
+                    DateTimeOffset CheckIndateTime = DateTimeOffset.Now;
+                    DateTimeOffset CheckOutdateTime = DateTimeOffset.Now;
+                    CheckIndateTime = new DateTimeOffset(int.Parse(attendance.Year), mon, i, attendance.CheckInTime.Value.Hour, attendance.CheckInTime.Value.Minute, attendance.CheckInTime.Value.Second,
+                                         new TimeSpan(1, 0, 0));
+                    CheckOutdateTime = new DateTimeOffset(int.Parse(attendance.Year), mon, i, attendance.CheckOutTime.Value.Hour, attendance.CheckOutTime.Value.Minute, attendance.CheckOutTime.Value.Second,
+                                        new TimeSpan(1, 0, 0));
+
 
                     attendanceList.Add(new Attendance
                     {
@@ -376,12 +482,13 @@ namespace HRMS.Customers
                         DepartmentID = attendance.DepartmentID,
                         MarkAttendanceBY = attendance.MarkAttendanceBY,
                         Year = attendance.Year,
+                        LocationID = attendance.LocationID,
                         Month = attendance.Month,
                         IsLate = attendance.IsLate,
                         IsHalfDay = attendance.IsHalfDay,
-                        CheckInTime = attendance.CheckInTime,
-                        CheckOutTime = attendance.CheckOutTime,
-                        AssignmentId = attendance.AssignmentId,
+                        CheckInTime = CheckIndateTime,
+                        CheckOutTime = CheckOutdateTime,
+                        AssignmentId = 2,
                         TimesheetId = attendance.TimesheetId,
                         ManualCheckInLat = attendance.ManualCheckInLat,
                         ManualCheckInLong = attendance.ManualCheckInLong,
@@ -430,6 +537,13 @@ namespace HRMS.Customers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public IActionResult EditAttendance(Attendance attendance)
+        {
+            this.db.Update(attendance);
+            this.db.SaveChanges();
+            return RedirectToAction("Index");
+        }
         public int TotalNumberOfDaysInMonth(int year, int month)
         {
 
@@ -467,6 +581,22 @@ namespace HRMS.Customers
         public ActionResult attendancereport()
         {
             return View();
+        }
+
+        public enum Month
+        {
+            January = 1,
+            February = 2,
+            March = 3,
+            April = 4,
+            May = 5,
+            June = 6,
+            July = 7,
+            August = 8,
+            September = 9,
+            Octobor = 10,
+            November = 11,
+            December = 12
         }
     }
 }

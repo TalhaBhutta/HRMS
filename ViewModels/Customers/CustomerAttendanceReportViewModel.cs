@@ -15,11 +15,15 @@ namespace HRMS.ViewModels
         //public TimeSpan InTime { get; set; }
         //public TimeSpan OutTime { get; set; }
         public List<Attendance> empAttendances { get; set; }
-
         public List<int> attDays { get; set; }
+
 
         public bool[] attended { get; set; }
         public int[] indexes { get; set; }
+        public string Selectedmonth { get; set; }
+        public int Selectedyear { get; set; }
+        public int Selectedemp { get; set; }
+        
         //public IEnumerable<Employee> empList { get; set; }
         //public IEnumerable<Attendance> empAtt { get; set; }
 

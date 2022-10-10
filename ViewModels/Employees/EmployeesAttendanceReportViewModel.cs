@@ -7,9 +7,20 @@ namespace HRMS.ViewModels
 {
     public class EmployeesAttendanceReportViewModel
     {
-        public Attendance AttendanceList { get; set; }
-        public Employee EmployeeList { get; set; }
-       
+        //public int Id { get; set; }
+        public string Emp_name { get; set; }
+        //public DateTimeOffset? Date { get; set; }
+        //public TimeSpan InTime { get; set; }
+        //public TimeSpan OutTime { get; set; }
+        public List<Attendance> empAttendances { get; set; }
+        public List<int> attDays { get; set; }
+
+
+        public bool[] attended { get; set; }
+        public int[] indexes { get; set; }
+        public string Selectedmonth { get; set; }
+        public int Selectedyear { get; set; }
+        public int Selectedemp { get; set; }
 
     }
 
