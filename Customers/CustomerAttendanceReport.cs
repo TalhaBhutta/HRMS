@@ -179,13 +179,17 @@ namespace HRMS.Customers
 
             int mon, year, noOfDays,empID = 0;
 
-            if (SelectedMonth == null || SelectedMonth == "undefined" || SelectedYear == null || SelectedYear == "undefined")
+            if (SelectedMonth == null || SelectedMonth == "undefined")
             {
                 SelectedMonth = DateTime.Now.ToString("MM");
+
+            }
+            if (SelectedYear == null || SelectedYear == "undefined")
+            {
                 SelectedYear = DateTime.Now.ToString("yyyy");
             }
 
-            if(SelectedEmployee != null && SelectedEmployee != "all")
+            if (SelectedEmployee != null && SelectedEmployee != "all")
             {
                 empID = int.Parse(SelectedEmployee);
             }
@@ -247,7 +251,7 @@ namespace HRMS.Customers
 
             ViewData["EmployeeList"] = new SelectList(db.Employee, "Id", "FirstName", SelectedEmployee);
             ViewData["LocationList"] = new SelectList(db.Locations, "Id", "Address");
-            
+
 
             if (empID !=0)
             {
@@ -279,6 +283,7 @@ namespace HRMS.Customers
                                    //           //select new {Employee_name = e.FirstName + ' ' + e.LastName, AttendedDay = a.CheckInTime.Value.Day };
                                    //           select new { a.CheckInTime.Value.Day }
                                    //   ).Select(x => x.Day).ToList(),
+                                   Shift = s,
                                    empAttendances = db.Attendance.Where(a => a.EmployeeId == e.Id && a.CheckInTime.Value.Month == mon && a.CheckInTime.Value.Year == year).OrderBy(e => e.CheckInTime).ToList(),
 
                                }).ToList();
@@ -313,6 +318,7 @@ namespace HRMS.Customers
                                    //           //select new {Employee_name = e.FirstName + ' ' + e.LastName, AttendedDay = a.CheckInTime.Value.Day };
                                    //           select new { a.CheckInTime.Value.Day }
                                    //   ).Select(x => x.Day).ToList(),
+                                   Shift = s,
                                    empAttendances = db.Attendance.Where(a => a.EmployeeId == e.Id && a.CheckInTime.Value.Month == mon && a.CheckInTime.Value.Year == year).OrderBy(e => e.CheckInTime).ToList(),
 
                                }).ToList();

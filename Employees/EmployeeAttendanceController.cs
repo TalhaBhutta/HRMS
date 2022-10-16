@@ -39,9 +39,13 @@ namespace HRMS.Employees
 
             int mon, year, noOfDays, empID = 0;
 
-            if (SelectedMonth == null || SelectedMonth == "undefined" || SelectedYear == null || SelectedYear == "undefined")
+            if (SelectedMonth == null || SelectedMonth == "undefined")
             {
                 SelectedMonth = DateTime.Now.ToString("MM");
+                
+            }
+            if(SelectedYear == null || SelectedYear == "undefined")
+            {
                 SelectedYear = DateTime.Now.ToString("yyyy");
             }
 

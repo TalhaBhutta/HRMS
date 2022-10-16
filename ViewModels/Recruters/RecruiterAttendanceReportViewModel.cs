@@ -7,7 +7,7 @@ using HRMS.Models;
 
 namespace HRMS.ViewModels
 {
-    public class CustomerAttendanceReportViewModel
+    public class RecruiterAttendanceReportViewModel
     {
         //public int Id { get; set; }
         public string Emp_name { get; set; }
